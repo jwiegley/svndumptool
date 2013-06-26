@@ -16,6 +16,8 @@ It has the following commands:
  * diff                 show differences between two dump files
  * edit                 edit files in a dump file
  * eolfix               fix EOL of text files in a dump
+ * eolfix-revprop       fix EOL of revision property
+ * eolfix-prop          fix EOL of node property
  * export               export files from a dump file
  * join                 join dump files
  * log                  show the log of a dump file
@@ -219,6 +221,38 @@ Known bugs:
  * EOL's aren't fixed in a file which was copied and the old file was not a
    text file.
  * Diff shows a few Text changes after eolfix !?!
+
+
+
+Eolfix-revprop
+-----------------
+
+Fixes EOL of revision property.
+
+svndumptool.py eolfix-revprop propname source destination
+
+options:
+  --version   show program's version number and exit
+  -h, --help  show this help message and exit
+
+Known bugs:
+ * None
+
+
+
+Eolfix-prop
+--------------
+
+Fixes EOL of property.
+
+svndumptool.py eolfix-prop propname source destination
+
+options:
+  --version   show program's version number and exit
+  -h, --help  show this help message and exit
+
+Known bugs:
+ * None
 
 
 

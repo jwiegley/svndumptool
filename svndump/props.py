@@ -83,6 +83,57 @@ def svndump_transform_revprop_cmdline( appname, args ):
     copy_dump_file( args[3], args[4],  RevisionPropertyTransformer( args[0], args[1], args[2] ) )
     return 0
 
+
+class EolRevisionPropertyTransformer:
+    """
+    A class for fixing EOL of the revision properties of a dump file class.
+    """
+
+    def __init__( self, propertyName ):
+        """
+        Creates a EolRevisionPropertyTransformer class.
+
+        @type propertyName: string
+        @param propertyName: Name of the property to transform.
+        """
+        self.__property_name = propertyName
+
+    def transform( self, dump ):
+        if dump.has_rev_prop( self.__property_name ):
+            value = dump.get_rev_prop_value( self.__property_name )
+            if value is not None:
+                newValue = value.replace( "\r\n", "\n" )
+                if newValue != value:
+                    dump.set_rev_prop_value( self.__property_name, newValue )
+
+def svndump_eolfix_revprop_cmdline( appname, args ):
+    """
+    Parses the commandline and executes the transformation.
+
+    Usage:
+
+        >>> svndump_eolfix_revprop_cmdline( sys.argv[0], sys.argv[1:] )
+
+    @type appname: string
+    @param appname: Name of the application (used in help text).
+    @type args: list( string )
+    @param args: Commandline arguments.
+    @rtype: integer
+    @return: Return code (0 = OK).
+    """
+
+    usage = "usage: %s propname source destination" % appname
+    parser = OptionParser( usage=usage, version="%prog "+__version )
+    (options, args) = parser.parse_args( args )
+
+    if len( args ) != 3:
+        print "specify exactly one propname to fix EOL, one source dump file and one destination dump file."
+        return 1
+
+    copy_dump_file( args[1], args[2],  EolRevisionPropertyTransformer( args[0] ) )
+    return 0
+
+
 class PropertyTransformer:
     """
     A class for transforming the properties of a dump file class.
@@ -135,6 +186,56 @@ def svndump_transform_prop_cmdline( appname, args ):
         return 1
 
     copy_dump_file( args[3], args[4],  PropertyTransformer( args[0], args[1], args[2] ) )
+    return 0
+
+
+class EolPropertyTransformer:
+    """
+    A class for fixing EOL of the properties of a dump file class.
+    """
+
+    def __init__( self, propertyName ):
+        """
+        Creates a EolPropertyTransformer class.
+
+        @type propertyName: string
+        @param propertyName: Name of the property to transform.
+        """
+        self.__property_name = propertyName
+
+    def transform( self, dump ):
+        for node in dump.get_nodes_iter():
+            value = node.get_property( self.__property_name )
+            if value is not None:
+                newValue = value.replace( "\r\n", "\n" )
+                if newValue != value:
+                    node.set_property( self.__property_name, newValue )
+
+def svndump_eolfix_prop_cmdline( appname, args ):
+    """
+    Parses the commandline and executes the transformation.
+
+    Usage:
+
+        >>> svndump_eolfix_prop_cmdline( sys.argv[0], sys.argv[1:] )
+
+    @type appname: string
+    @param appname: Name of the application (used in help text).
+    @type args: list( string )
+    @param args: Commandline arguments.
+    @rtype: integer
+    @return: Return code (0 = OK).
+    """
+
+    usage = "usage: %s propname source destination" % appname
+    parser = OptionParser( usage=usage, version="%prog "+__version )
+    (options, args) = parser.parse_args( args )
+
+    if len( args ) != 3:
+        print "specify exactly one propname to fix EOL, one source dump file and one destination dump file."
+        return 1
+
+    copy_dump_file( args[1], args[2],  EolPropertyTransformer( args[0] ) )
     return 0
 
 

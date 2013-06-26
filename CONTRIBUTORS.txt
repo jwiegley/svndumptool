@@ -3,6 +3,9 @@ This file lists the contributors to svndumptool. Thank you for your work!
 Should I have forgotten to add anyone please tell me.
 
 
+Wojciech Dec
+ - Add eolfix-revprop and eoldix-prop command.
+
 Eli Carter
  - Delete temp files.
  - Fix typo in a function comment.
@@ -55,4 +58,3 @@ Matthias Troffaes
 
 Serge Levin
  - Bugfix: Missing UUID caused traceback.
-

@@ -31,6 +31,8 @@ from svndump.eolfix import svndump_eol_fix_cmdline
 from svndump.merge import svndump_merge_cmdline
 from svndump.props import svndump_transform_revprop_cmdline, \
                           svndump_transform_prop_cmdline, \
+                          svndump_eolfix_revprop_cmdline, \
+                          svndump_eolfix_prop_cmdline, \
                           svndump_apply_autoprops_cmdline
 from svndump.sanitize import svndump_sanitize_cmdline
 from svndump.tools import svndump_copy_cmdline, svndump_export_cmdline, \
@@ -46,6 +48,8 @@ __commands = {
     "diff":                 svndump_diff_cmdline,
     "edit":                 svndump_edit_cmdline,
     "eolfix":               svndump_eol_fix_cmdline,
+    "eolfix-prop":          svndump_eolfix_prop_cmdline,
+    "eolfix-revprop":       svndump_eolfix_revprop_cmdline,
     "export":               svndump_export_cmdline,
     "join":                 svndump_join_cmdline,
     "log":                  svndump_log_cmdline,
@@ -73,6 +77,8 @@ def __help( appname, args ):
         print "    diff                 show differences between two dump files"
         print "    edit                 edit files in a dump file"
         print "    eolfix               fix EOL of text files in a dump"
+        print "    eolfix-revprop       fix EOL of revision property"
+        print "    eolfix-prop          fix EOL of node property"
         print "    export               export files from a dump file"
         print "    join                 join dump files"
         print "    log                  show the log of a dump file"
