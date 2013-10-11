@@ -3,6 +3,9 @@ This file lists the contributors to svndumptool. Thank you for your work!
 Should I have forgotten to add anyone please tell me.
 
 
+Tom Taxon
+ - Add list-large-files command
+ 
 Wojciech Dec
  - Add eolfix-revprop and eoldix-prop command.
 

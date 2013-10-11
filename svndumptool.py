@@ -39,6 +39,7 @@ from svndump.tools import svndump_copy_cmdline, svndump_export_cmdline, \
                           svndump_check_cmdline, svndump_log_cmdline, \
                           svndump_ls_cmdline, \
                           svndump_join_cmdline, svndump_split_cmdline
+from svndump.listfiles import svndump_list_large_files
 
 __commands = {
     "apply-autoprops":      svndump_apply_autoprops_cmdline,
@@ -52,6 +53,7 @@ __commands = {
     "eolfix-revprop":       svndump_eolfix_revprop_cmdline,
     "export":               svndump_export_cmdline,
     "join":                 svndump_join_cmdline,
+    "list-large-files":     svndump_list_large_files,
     "log":                  svndump_log_cmdline,
     "ls":                   svndump_ls_cmdline,
     "merge":                svndump_merge_cmdline,
@@ -81,6 +83,7 @@ def __help( appname, args ):
         print "    eolfix-prop          fix EOL of node property"
         print "    export               export files from a dump file"
         print "    join                 join dump files"
+        print "    list-large-files     list large files in a dump file"
         print "    log                  show the log of a dump file"
         print "    ls                   list files of a given revision"
         print "    merge                merge dump files"
