@@ -39,8 +39,10 @@ from svndump.tools import svndump_copy_cmdline, svndump_export_cmdline, \
                           svndump_check_cmdline, svndump_log_cmdline, \
                           svndump_ls_cmdline, \
                           svndump_join_cmdline, svndump_split_cmdline
+from svndump.add_git_ignore import svndump_add_git_ignore
 
 __commands = {
+    "add-git-ignore":       svndump_add_git_ignore,
     "apply-autoprops":      svndump_apply_autoprops_cmdline,
     "check":                svndump_check_cmdline,
     "copy":                 svndump_copy_cmdline,
@@ -70,6 +72,7 @@ def __help( appname, args ):
         print "svndumptool.py command [options]"
         print ""
         print "  commands:"
+        print "    add-git-ignore       add .gitignore files for each svn:ignore file found"
         print "    apply-autoprops      apply auto-props to added files"
         print "    check                check a dump file"
         print "    copy                 copy a dump file"
