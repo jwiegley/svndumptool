@@ -58,3 +58,6 @@ Matthias Troffaes
 
 Serge Levin
  - Bugfix: Missing UUID caused traceback.
+
+ Benjamin Baumann
+ - when the dump is not consistent, handle conflicts caused by copy_from_rev revision number that does not exist any longer.
