@@ -42,7 +42,7 @@ from svndump.tools import svndump_copy_cmdline, svndump_export_cmdline, \
 from svndump.delrevs import svndump_delete_empty_revs
 from svndump.add_git_ignore import svndump_add_git_ignore
 from svndump.listfiles import svndump_list_large_files
-
+from svndump.list_authors import svndump_list_authors
 __commands = {
     "add-git-ignore":       svndump_add_git_ignore,
     "apply-autoprops":      svndump_apply_autoprops_cmdline,
@@ -51,6 +51,7 @@ __commands = {
     "cvs2svnfix":           svndump_cvs2svnfix_cmdline,
     "delete-empty-revs":    svndump_delete_empty_revs,
     "diff":                 svndump_diff_cmdline,
+    "list-authors":         svndump_list_authors,
     "edit":                 svndump_edit_cmdline,
     "eolfix":               svndump_eol_fix_cmdline,
     "eolfix-prop":          svndump_eolfix_prop_cmdline,
@@ -90,6 +91,7 @@ def __help( appname, args ):
         print "    export               export files from a dump file"
         print "    join                 join dump files"
         print "    list-large-files     list large files in a dump file"
+        print "    list-authors         list all the authors in a dump file"
         print "    log                  show the log of a dump file"
         print "    ls                   list files of a given revision"
         print "    merge                merge dump files"

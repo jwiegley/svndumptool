@@ -11,6 +11,9 @@ Tom Taxon
 Tom Taxon
  - Add list-large-files command
  
+Tom Taxon
+ - Add dump-authors command
+ 
 Wojciech Dec
  - Add eolfix-revprop and eoldix-prop command.
 
