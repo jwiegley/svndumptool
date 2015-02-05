@@ -5,6 +5,9 @@ Should I have forgotten to add anyone please tell me.
 Tom Taxon
  - Add delete-empty-revs command.
 
+Tom Taxon
+ - Add add-git-ignore command
+
 Wojciech Dec
  - Add eolfix-revprop and eoldix-prop command.
 
