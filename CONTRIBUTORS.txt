@@ -8,6 +8,9 @@ Tom Taxon
 Tom Taxon
  - Add add-git-ignore command
 
+Tom Taxon
+ - Add list-large-files command
+ 
 Wojciech Dec
  - Add eolfix-revprop and eoldix-prop command.
 
