@@ -237,6 +237,14 @@ class SvnDumpNode:
         """
         return self.__copy_from_rev
 
+    def set_copy_from_rev( self, revnr ):
+        """
+        Set the revision the node has been copied from.
+
+        @rtype: integer
+        @return: copy-from-rev.
+        """
+        self.__copy_from_rev = revnr
     def set_copy_from( self, path, revnr ):
         """
         Sets copy-from-path and copy-from-rev.

@@ -28,6 +28,11 @@ import tempfile
 import random
 import string
 
+try:
+    import hashlib
+except ImportError:
+    import md5 as hashlib
+
 from svndump import __version
 from optparse import OptionParser
 from file import SvnDumpFile
@@ -188,5 +193,12 @@ def svndump_sanitize_cmdline( appname, args ):
     sanitizer = SanitizeDumpFile(options)
     copy_dump_file( args[0], args[1], sanitizer )
     return 0
-
-
+    
+    
+def sdt_md5():
+    """
+    Returns a new md5 object.
+    
+    For compatibility with python <2.5.
+    """
+    return hashlib.md5()

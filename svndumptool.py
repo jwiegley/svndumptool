@@ -39,19 +39,26 @@ from svndump.tools import svndump_copy_cmdline, svndump_export_cmdline, \
                           svndump_check_cmdline, svndump_log_cmdline, \
                           svndump_ls_cmdline, \
                           svndump_join_cmdline, svndump_split_cmdline
-
+from svndump.delrevs import svndump_delete_empty_revs
+from svndump.add_git_ignore import svndump_add_git_ignore
+from svndump.listfiles import svndump_list_large_files
+from svndump.list_authors import svndump_list_authors
 __commands = {
+    "add-git-ignore":       svndump_add_git_ignore,
     "apply-autoprops":      svndump_apply_autoprops_cmdline,
     "check":                svndump_check_cmdline,
     "copy":                 svndump_copy_cmdline,
     "cvs2svnfix":           svndump_cvs2svnfix_cmdline,
+    "delete-empty-revs":    svndump_delete_empty_revs,
     "diff":                 svndump_diff_cmdline,
+    "list-authors":         svndump_list_authors,
     "edit":                 svndump_edit_cmdline,
     "eolfix":               svndump_eol_fix_cmdline,
     "eolfix-prop":          svndump_eolfix_prop_cmdline,
     "eolfix-revprop":       svndump_eolfix_revprop_cmdline,
     "export":               svndump_export_cmdline,
     "join":                 svndump_join_cmdline,
+    "list-large-files":     svndump_list_large_files,
     "log":                  svndump_log_cmdline,
     "ls":                   svndump_ls_cmdline,
     "merge":                svndump_merge_cmdline,
@@ -70,10 +77,12 @@ def __help( appname, args ):
         print "svndumptool.py command [options]"
         print ""
         print "  commands:"
+        print "    add-git-ignore       add .gitignore files for each svn:ignore file found"
         print "    apply-autoprops      apply auto-props to added files"
         print "    check                check a dump file"
         print "    copy                 copy a dump file"
         print "    cvs2svnfix           fix a cvs2svn created dump file"
+        print "    delete-empty-revs    delete empty revisions from a dump file"
         print "    diff                 show differences between two dump files"
         print "    edit                 edit files in a dump file"
         print "    eolfix               fix EOL of text files in a dump"
@@ -81,6 +90,8 @@ def __help( appname, args ):
         print "    eolfix-prop          fix EOL of node property"
         print "    export               export files from a dump file"
         print "    join                 join dump files"
+        print "    list-large-files     list large files in a dump file"
+        print "    list-authors         list all the authors in a dump file"
         print "    log                  show the log of a dump file"
         print "    ls                   list files of a given revision"
         print "    merge                merge dump files"

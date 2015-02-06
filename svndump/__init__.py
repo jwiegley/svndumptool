@@ -29,7 +29,7 @@ import common
 from file import SvnDumpFile
 
 __doc__ = """A package for processing subversion dump files."""
-__version = "0.7.0"
+__version = "0.8.0"
 
 def copy_dump_file( srcfile, dstfile, transformer=None ):
     """
@@ -47,6 +47,9 @@ def copy_dump_file( srcfile, dstfile, transformer=None ):
     srcdmp = SvnDumpFile()
     dstdmp = SvnDumpFile()
 
+	# Copy_from_rev casacading
+    oldRevToNewRev = dict()
+
     # open source file
     srcdmp.open( srcfile )
 
@@ -58,7 +61,23 @@ def copy_dump_file( srcfile, dstfile, transformer=None ):
         while hasrev:
             if transformer != None:
                 transformer.transform( srcdmp )
+            for node in srcdmp.get_nodes_iter():
+                if node.has_copy_from():
+                    if oldRevToNewRev.has_key(node.get_copy_from_rev()):
+                        node.set_copy_from_rev(oldRevToNewRev[node.get_copy_from_rev()])
+                    else:
+                        #We have a problem, the copy from revision is missing.
+						#We look for a previous revision containing the file
+                        found = False
+                        candidate = node.get_copy_from_rev()
+                        while candidate > 0 and not found:
+                            candidate = candidate - 1
+                            found = oldRevToNewRev.has_key(candidat)
+                        if found:
+							oldRevToNewRev[node.get_copy_from_rev()] = candidate
+							node.set_copy_from_rev(candidat)
             dstdmp.add_rev_from_dump( srcdmp )
+            oldRevToNewRev[srcdmp.get_rev_nr()] = dstdmp.get_rev_nr()
             hasrev = srcdmp.read_next_rev()
     else:
         print "no revisions in the source dump '%s' ???" % srcfile
