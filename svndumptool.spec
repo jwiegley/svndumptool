@@ -1,5 +1,5 @@
 %define name svndumptool
-%define version 0.7.0
+%define version 0.8.0
 %define release 0pre1
 
 Summary: Package and cmdline tool for processing Subversion dump files.
