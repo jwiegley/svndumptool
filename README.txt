@@ -369,6 +369,23 @@ Known bugs:
 
 
 
+Remove-prop
+-----------
+
+This removes all properties with a value matching the given regex.
+Example: svndumptool.py remove-prop "svn:externals" "^svn\+ssh:\/\/example.com" input.dump output.dump
+
+svndumptool.py remove-prop propname regex source destination
+
+Options:
+  --version   show program's version number and exit
+  -h, --help  show this help message and exit
+
+Known bugs:
+ * None
+
+
+
 Sanitize
 --------
 
