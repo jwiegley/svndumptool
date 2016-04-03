@@ -43,6 +43,8 @@ from svndump.delrevs import svndump_delete_empty_revs
 from svndump.add_git_ignore import svndump_add_git_ignore
 from svndump.listfiles import svndump_list_large_files
 from svndump.list_authors import svndump_list_authors
+from svndump.remove_prop import svndump_remove_prop
+
 __commands = {
     "add-git-ignore":       svndump_add_git_ignore,
     "apply-autoprops":      svndump_apply_autoprops_cmdline,
@@ -62,6 +64,7 @@ __commands = {
     "log":                  svndump_log_cmdline,
     "ls":                   svndump_ls_cmdline,
     "merge":                svndump_merge_cmdline,
+    "remove-prop":          svndump_remove_prop,
     "sanitize":             svndump_sanitize_cmdline,
     "split":                svndump_split_cmdline,
     "transform-prop":       svndump_transform_prop_cmdline,
@@ -95,6 +98,7 @@ def __help( appname, args ):
         print "    log                  show the log of a dump file"
         print "    ls                   list files of a given revision"
         print "    merge                merge dump files"
+        print "    remove-prop          remove a node property"
         print "    sanitize             sanitize dump files"
         print "    split                split dump files"
         print "    transform-revprop    transform a revision property"
