@@ -72,10 +72,10 @@ def copy_dump_file( srcfile, dstfile, transformer=None ):
                         candidate = node.get_copy_from_rev()
                         while candidate > 0 and not found:
                             candidate = candidate - 1
-                            found = oldRevToNewRev.has_key(candidat)
+                            found = oldRevToNewRev.has_key(candidate)
                         if found:
 							oldRevToNewRev[node.get_copy_from_rev()] = candidate
-							node.set_copy_from_rev(candidat)
+							node.set_copy_from_rev(candidate)
             dstdmp.add_rev_from_dump( srcdmp )
             oldRevToNewRev[srcdmp.get_rev_nr()] = dstdmp.get_rev_nr()
             hasrev = srcdmp.read_next_rev()
