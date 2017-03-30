@@ -28,6 +28,31 @@ import sys
 
 from svndump import __version, copy_dump_file, SvnDumpFile
 
+def re_sub(pattern, replacement, string):
+    print "New replacement:"
+    def _r(m):
+        # Now this is ugly.
+        # Python has a "feature" where unmatched groups return None
+        # then re.sub chokes on this.
+        # see http://bugs.python.org/issue1519638
+        
+        # this works around and hooks into the internal of the re module...
+
+        # the match object is replaced with a wrapper that
+        # returns "" instead of None for unmatched groups
+
+        class _m():
+            def __init__(self, m):
+                self.m=m
+                self.string=m.string
+            def group(self, n):
+                return m.group(n) or ""
+
+        return re._expand(pattern, _m(m), replacement)
+    newValue=re.sub(pattern, _r, string)
+    print " - Previous value => %s \n - New value => %s " % (string, newValue)
+    return newValue
+    
 class RevisionPropertyTransformer:
     """
     A class for transforming the revision properties of a dump file class.
@@ -158,7 +183,7 @@ class PropertyTransformer:
         for node in dump.get_nodes_iter():
             value = node.get_property(self.__property_name)
             if value != None:
-                newvalue = self.__pattern.sub(self.__replace_template, value)
+                newvalue = re_sub(self.__pattern, self.__replace_template, value)
                 node.set_property( self.__property_name, newvalue )
 
 def svndump_transform_prop_cmdline( appname, args ):
