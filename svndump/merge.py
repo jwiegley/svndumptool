@@ -337,17 +337,27 @@ class SvnDumpMerge:
             if properties.has_key('svn:mergeinfo'):
                 mergeInfo = properties['svn:mergeinfo']
                 for line in mergeInfo.split('\n'):
-                    m = re.match('^(.*):(\d+)-(\d+)', line)
+                    m = re.match('^(.*):(.*)', line)
                     if m != None:
                         mergePath = m.group(1)
-                        mergeFrom = int(m.group(2))
-                        mergeTo = int(m.group(3))
+                        revPart = m.group(2)
                         newMergePath = self.__rename_path( mergePath, dumpIndex)
-                        newMergeFrom = self.__in_rev_nr_maps[dumpIndex][mergeFrom]
-                        newMergeTo = self.__in_rev_nr_maps[dumpIndex][mergeTo]
+                        if not newMergePath.startswith("/"):
+                            newMergePath = "/" + newMergePath
                         if len(newMergeInfo) != 0:
                             newMergeInfo = newMergeInfo + "\n"
-                        newMergeInfo = newMergeInfo + newMergePath + ":" + str(newMergeFrom) + "-" + str(newMergeTo)
+                        newMergeInfo = newMergeInfo + newMergePath + ":"
+                        revSep = ""
+                        for rm in re.finditer('(\d+)(?:-(\d+))?,?', revPart):
+                            mergeFrom = int(rm.group(1))
+                            newMergeFrom = self.__in_rev_nr_maps[dumpIndex][mergeFrom]
+                            newMergeInfo = newMergeInfo + revSep + str(newMergeFrom)
+                            revSep = ","
+                            if rm.group(2) != None:
+                                mergeTo = int(rm.group(2))
+                                newMergeTo = self.__in_rev_nr_maps[dumpIndex][mergeTo]
+                                newMergeInfo = newMergeInfo + "-" + str(newMergeTo)
+
 
                 if mergeInfo != newMergeInfo:
                     change = 1
