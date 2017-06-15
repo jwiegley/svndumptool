@@ -106,11 +106,11 @@ class SvnDumpEdit:
         """
         Print a list of the files to be edited.
         """
-        for (r, rev) in self.__edit_files.iteritems():
+        for (r, rev) in self.__edit_files.items():
             print("Edit Revision %d" % r)
-            for (f, fn) in rev.iteritems():
+            for (f, fn) in rev.items():
                 print("  %s:" % f)
-                for (e, arg) in fn.iteritems():
+                for (e, arg) in fn.items():
                     print("    + %-9s -> %s" % (e, arg))
 
     def __print(self, level, msg):
@@ -185,7 +185,7 @@ class SvnDumpEdit:
             level = (fn and 1) or 2
             self.__print(level, "  '%s'" % node.get_path())
             if fn:
-                for (k, v) in fn.iteritems():
+                for (k, v) in fn.items():
                     if k == 'replace':
                         node = self.__replace_file(node, v)
                     elif k == 'propdel':

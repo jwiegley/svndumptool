@@ -64,7 +64,7 @@ class SanitizeDumpFile(object):
         return ''.join(bytes)
 
     def sanitize_rev_props(self, rev_props):
-        for k in rev_props.iterkeys():
+        for k in rev_props.keys():
             if self.__options.logs and k == 'svn:log':
                 rev_props['svn:log'] = self.hash(rev_props['svn:log'])
             elif self.__options.usernames and k == 'svn:author':

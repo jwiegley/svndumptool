@@ -123,7 +123,7 @@ class SvnDumpExport:
         while dump.read_next_rev():
             revnr = dump.get_rev_nr()
             if self.__exports.has_key(revnr):
-                for path, filename in self.__exports[revnr].iteritems():
+                for path, filename in self.__exports[revnr].items():
                     print("r%-6d %s" % (revnr, path))
                     nodes = dump.get_nodes_by_path(path, "ACR")
                     saved = False

@@ -647,7 +647,7 @@ class SvnDumpFile:
         Returns an iterator returning the nodes.
         """
 
-        return self.__nodes.itervalues()
+        return self.__nodes.values()
 
     # ------------------------------------------------------------
     #  write methods
