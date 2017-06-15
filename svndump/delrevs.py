@@ -21,6 +21,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 from optparse import OptionParser
 
 from svndump import __version, SvnDumpFile
@@ -57,11 +59,11 @@ def copy_without_empty_revs( srcfile, dstfile ):
                         node.set_copy_from(node.get_copy_from_path(),revmap[node.get_copy_from_rev()])
                 dstdmp.add_rev_from_dump( srcdmp )
             else:
-                print "Dropping empty revision: %d." % srcdmp.get_rev_nr()
+                print("Dropping empty revision: %d." % srcdmp.get_rev_nr())
             revmap[srcdmp.get_rev_nr()] = dstdmp.get_rev_nr()
             hasrev = srcdmp.read_next_rev()
     else:
-        print "no revisions in the source dump '%s' ???" % srcfile
+        print("no revisions in the source dump '%s' ???" % srcfile)
 
     # cleanup
     srcdmp.close()
@@ -88,7 +90,7 @@ def svndump_delete_empty_revs( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 2:
-        print "specify a source dump file and a destination dump file"
+        print("specify a source dump file and a destination dump file")
         return 1
 
     copy_without_empty_revs( args[0], args[1],  )

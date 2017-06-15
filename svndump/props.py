@@ -21,6 +21,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 from optparse import OptionParser
 import os
 import re
@@ -29,7 +31,8 @@ import sys
 from svndump import __version, copy_dump_file, SvnDumpFile
 
 def re_sub(pattern, replacement, string):
-    print "New replacement:"
+    print("New replacement:")
+
     def _r(m):
         # Now this is ugly.
         # Python has a "feature" where unmatched groups return None
@@ -50,7 +53,7 @@ def re_sub(pattern, replacement, string):
 
         return re._expand(pattern, _m(m), replacement)
     newValue=re.sub(pattern, _r, string)
-    print " - Previous value => %s \n - New value => %s " % (string, newValue)
+    print(" - Previous value => %s \n - New value => %s " % (string, newValue))
     return newValue
     
 class RevisionPropertyTransformer:
@@ -102,7 +105,8 @@ def svndump_transform_revprop_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 5:
-        print "specify exactly one propname to transform, one regex to match the value against,\none replacement string, one source dump file and one destination dump file."
+        print("specify exactly one propname to transform, one regex to match the value against,\n"
+              "one replacement string, one source dump file and one destination dump file.")
         return 1
 
     copy_dump_file( args[3], args[4],  RevisionPropertyTransformer( args[0], args[1], args[2] ) )
@@ -152,7 +156,7 @@ def svndump_eolfix_revprop_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 3:
-        print "specify exactly one propname to fix EOL, one source dump file and one destination dump file."
+        print("specify exactly one propname to fix EOL, one source dump file and one destination dump file.")
         return 1
 
     copy_dump_file( args[1], args[2],  EolRevisionPropertyTransformer( args[0] ) )
@@ -207,7 +211,8 @@ def svndump_transform_prop_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 5:
-        print "specify exactly one propname to transform, one regex to match the value against,\none replacement string, one source dump file and one destination dump file."
+        print("specify exactly one propname to transform, one regex to match the value against,\n"
+              "one replacement string, one source dump file and one destination dump file.")
         return 1
 
     copy_dump_file( args[3], args[4],  PropertyTransformer( args[0], args[1], args[2] ) )
@@ -257,7 +262,7 @@ def svndump_eolfix_prop_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 3:
-        print "specify exactly one propname to fix EOL, one source dump file and one destination dump file."
+        print("specify exactly one propname to fix EOL, one source dump file and one destination dump file.")
         return 1
 
     copy_dump_file( args[1], args[2],  EolPropertyTransformer( args[0] ) )
@@ -378,7 +383,7 @@ class ApplyAutoprops:
             inDump.read_next_rev()
             outDump.create_like( self.outputfilename, inDump )
             while inDump.has_revision():
-                print "revision %d" % inDump.get_rev_nr();
+                print("revision %d" % inDump.get_rev_nr())
                 outDump.add_rev( inDump.get_rev_props() )
                 for index in range( 0, inDump.get_node_count() ):
                     node = inDump.get_node( index )
@@ -392,7 +397,7 @@ class ApplyAutoprops:
             inDump.close()
             outDump.close()
         except Exception, ex:
-            print "Error:", ex
+            print("Error:", ex)
             return 1
         return 0
 
@@ -412,8 +417,8 @@ class ApplyAutoprops:
                     node.set_property( pname, pval )
                     propkeys += ", " + pname
         if len(propkeys) > 0:
-            print "  " + node.get_path()
-            print "    set " + propkeys[2:]
+            print("  " + node.get_path())
+            print("    set " + propkeys[2:])
 
     def _read_config( self ):
         """
@@ -545,7 +550,7 @@ def svndump_apply_autoprops_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len(args) != 2:
-        print "Please specify exactly one input and one output dump file."
+        print("Please specify exactly one input and one output dump file.")
         return 1
 
     configfile = options.configfile

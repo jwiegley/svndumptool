@@ -22,6 +22,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 import os
 import sys
 import tempfile
@@ -42,7 +44,7 @@ class SanitizeDumpFile(object):
     def __init__(self, options):
         self.__options = options
         self.sanitize_salt = self.salthex_to_salt(options.salt)
-        print "Using salt %s" % (options.salt, )
+        print("Using salt %s" % (options.salt,))
         self.sanitized_authors = []
 
     def transform(self, dump):
@@ -75,7 +77,7 @@ class SanitizeDumpFile(object):
             elif k == 'svn:date':
                 pass # leave this for now.
             else:
-                print "Couldn't sanitize %s: \"%s\"" % (k, rev_props[k])
+                print("Couldn't sanitize %s: \"%s\"" % (k, rev_props[k]))
         return rev_props
 
     # Sanitize the data using a salted md5sum
@@ -187,7 +189,7 @@ def svndump_sanitize_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 2:
-        print "specify exactly one source and one destination dump file."
+        print("specify exactly one source and one destination dump file.")
         return 1
 
     sanitizer = SanitizeDumpFile(options)

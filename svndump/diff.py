@@ -20,6 +20,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 from optparse import OptionParser
 
 from svndump import __version
@@ -122,9 +124,9 @@ class SvnDumpDiffCallback:
         self.filename1 = filename1
         self.filename2 = filename2
         if self.verbosity > 0:
-            print "Comparing"
-            print "  dump1: '%s'" % self.filename1
-            print "  dump2: '%s'" % self.filename2
+            print("Comparing")
+            print("  dump1: '%s'" % self.filename1)
+            print("  dump2: '%s'" % self.filename2)
 
     def compare_done( self ):
         """
@@ -133,14 +135,14 @@ class SvnDumpDiffCallback:
 
         if self.verbosity > 0:
             if self.diffs:
-                print "Done, found diffs."
+                print("Done, found diffs.")
                 if len( self.__summary ) > 0:
-                    print "  %-15s %7s %7s" % ( "type", "total", "showed" )
+                    print("  %-15s %7s %7s" % ("type", "total", "showed"))
                 for type in self.__summary:
                     counts = self.__summary[type]
-                    print "  %-15s %7d %7d" % ( type, counts[0], counts[1] )
+                    print("  %-15s %7d %7d" % (type, counts[0], counts[1]))
             else:
-                print "Done."
+                print("Done.")
 
     def __summary_inc( self, type, show ):
         """
@@ -183,7 +185,7 @@ class SvnDumpDiffCallback:
         """
         if not self.__rev_printed:
             self.__rev_printed = True
-            print "Revision: %d/%d" % ( self.revnr1, self.revnr2 )
+            print("Revision: %d/%d" % (self.revnr1, self.revnr2))
 
     def next_node( self, node, index1, index2 ):
         """
@@ -214,8 +216,8 @@ class SvnDumpDiffCallback:
         self.__print_rev()
         if not self.__node_printed:
             self.__node_printed = True
-            print "  Node: %s %s '%s' (%d/%d)" % \
-                ( self.action, self.kind, self.path, self.index1, self.index2 )
+            print("  Node: %s %s '%s' (%d/%d)" %
+                   (self.action, self.kind, self.path, self.index1, self.index2))
 
     def rev_diff( self, type, value1, value2 ):
         """
@@ -244,9 +246,9 @@ class SvnDumpDiffCallback:
             self.diffs = True
             if self.verbosity > 0:
                 self.__print_rev()
-                print "+ Different %s:" % type
-                print "    dump1: '%s'" % value1
-                print "    dump2: '%s'" % value2
+                print("+ Different %s:" % type)
+                print("    dump1: '%s'" % value1)
+                print("    dump2: '%s'" % value2)
 
     def revprop_diff( self, name, value1, value2 ):
         """
@@ -272,10 +274,10 @@ class SvnDumpDiffCallback:
                 self.__print_rev()
                 if not self.__prophdr_printed:
                     self.__prophdr_printed = True
-                    print "  Properties:"
-                print "    Property '%s'" % name
-                print "      dump1: '%s'" % value1
-                print "      dump2: '%s'" % value2
+                    print("  Properties:")
+                print("    Property '%s'" % name)
+                print("      dump1: '%s'" % value1)
+                print("      dump2: '%s'" % value2)
 
     def revprop_missing( self, dumpnr, name, value ):
         """
@@ -301,9 +303,9 @@ class SvnDumpDiffCallback:
                 self.__print_rev()
                 if not self.__prophdr_printed:
                     self.__prophdr_printed = True
-                    print "  Properties:"
-                print "    Property '%s' missing in dump%d" % ( name, dumpnr )
-                print "      dump%d: '%s'" % ( 3-dumpnr, value )
+                    print("  Properties:")
+                print("    Property '%s' missing in dump%d" % (name, dumpnr))
+                print("      dump%d: '%s'" % (3 - dumpnr, value))
 
     def node_diff( self, type, value1, value2 ):
         """
@@ -336,9 +338,9 @@ class SvnDumpDiffCallback:
             if self.verbosity > 0:
                 self.__print_rev()
                 self.__print_node()
-                print "+   Different %s:" % type
-                print "      dump1: '%s'" % value1
-                print "      dump2: '%s'" % value2
+                print("+   Different %s:" % type)
+                print("      dump1: '%s'" % value1)
+                print("      dump2: '%s'" % value2)
 
     def node_missing( self, dumpnr, node ):
         """
@@ -358,9 +360,9 @@ class SvnDumpDiffCallback:
             self.diffs = True
             if self.verbosity > 0:
                 self.__print_rev()
-                print "+ Node missing in dump%d:" % dumpnr
-                print "    Node: %s %s '%s'" % \
-                    ( node.get_action(), node.get_kind(), node.get_path() )
+                print("+ Node missing in dump%d:" % dumpnr)
+                print("    Node: %s %s '%s'" %
+                       (node.get_action(), node.get_kind(), node.get_path()))
 
     def wrong_md5( self, dumpnr, should, calc ):
         """
@@ -382,9 +384,9 @@ class SvnDumpDiffCallback:
             self.diffs = True
             if self.verbosity > 0:
                 self.__print_node()
-                print "+   Wrong MD5 in dump%d:" % dumpnr
-                print "      should be:   '%s'" % should
-                print "      calculated:  '%s'" % calc
+                print("+   Wrong MD5 in dump%d:" % dumpnr)
+                print("      should be:   '%s'" % should)
+                print("      calculated:  '%s'" % calc)
 
     def text_diff( self, type ):
         """
@@ -406,7 +408,7 @@ class SvnDumpDiffCallback:
             self.diffs = True
             if self.verbosity > 0:
                 self.__print_node()
-                print "+   Text differs (type '%s')" % type
+                print("+   Text differs (type '%s')" % type)
 
     def prop_diff( self, name, value1, value2 ):
         """
@@ -432,10 +434,10 @@ class SvnDumpDiffCallback:
                 self.__print_node()
                 if not self.__prophdr_printed:
                     self.__prophdr_printed = True
-                    print "    Properties:"
-                print "+     Property '%s'" % name
-                print "        dump1: '%s'" % value1
-                print "        dump2: '%s'" % value2
+                    print("    Properties:")
+                print("+     Property '%s'" % name)
+                print("        dump1: '%s'" % value1)
+                print("        dump2: '%s'" % value2)
 
     def prop_missing( self, dumpnr, name, value ):
         """
@@ -461,9 +463,10 @@ class SvnDumpDiffCallback:
                 self.__print_node()
                 if not self.__prophdr_printed:
                     self.__prophdr_printed = True
-                    print "    Properties:"
-                print "+     Property '%s' missing in dump%d" % ( name, dumpnr )
-                print "        dump%d: '%s'" % ( 3-dumpnr, value )
+                    print("    Properties:")
+                print("+     Property '%s' missing in dump%d" % (name, dumpnr))
+                print("        dump%d: '%s'" % (3 - dumpnr, value))
+
 
 class SvnDumpDiff:
     """
@@ -550,7 +553,7 @@ class SvnDumpDiff:
             hasrev2 = dump2.read_next_rev()
 
         if hasrev1 or hasrev2:
-            print "random error ;-) (different rev nr or EOF of one file)"
+            print("random error ;-) (different rev nr or EOF of one file)")
 
         # done.
         callback.compare_done()
@@ -853,7 +856,7 @@ def svndump_diff_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len(args) != 2:
-        print "please specify exactly two dump files."
+        print("please specify exactly two dump files.")
         return 1
 
     diff = SvnDumpDiff( args[0], args[1] )

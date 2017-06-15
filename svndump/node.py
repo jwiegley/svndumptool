@@ -20,6 +20,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 from os import stat, remove
 from stat import ST_SIZE
 

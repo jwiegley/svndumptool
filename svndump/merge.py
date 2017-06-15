@@ -20,6 +20,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 import sys
 import re
 from optparse import OptionParser
@@ -186,10 +188,10 @@ class SvnDumpMerge:
         """
 
         if len(self.__in_files) == 0:
-            print "merge: no input files specified"
+            print("merge: no input files specified")
             return
         if len(self.__out_file) == 0:
-            print "merge: no output file specified"
+            print("merge: no output file specified")
             return
 
         # open input dump files
@@ -255,9 +257,9 @@ class SvnDumpMerge:
                     oldestIndex = index
             # copy revision
             self.__copy_revision( oldestIndex )
-            print "Revision: %-8d from r%-8d %s" % ( self.outDump.get_rev_nr(),
-                self.__in_dumps[oldestIndex].get_rev_nr(),
-                self.__in_files[oldestIndex] )
+            print("Revision: %-8d from r%-8d %s" % (self.outDump.get_rev_nr(),
+                                                     self.__in_dumps[oldestIndex].get_rev_nr(),
+                                                     self.__in_files[oldestIndex]))
             # read next revision
             srcDump = self.__in_dumps[oldestIndex]
             if srcDump.read_next_rev():
@@ -266,7 +268,7 @@ class SvnDumpMerge:
                 dumpCount = self.__remove_empty_dumps()
 
         # close output
-        print "created %d revisions" % self.outDump.get_rev_nr()
+        print("created %d revisions" % self.outDump.get_rev_nr())
         self.outDump.close()
             
 
@@ -500,23 +502,23 @@ def __svndump_merge_example( option, opt, value, parser, *args ):
     Prints a little usage example.
     """
 
-    print ""
-    print args[2] + " \\"
-    print "  -i proj1.dmp \\"
-    print "  -r trunk trunk/proj1 -r tags tags/proj1 -r branches branches/proj1 \\"
-    print "  -i proj2.dmp \\"
-    print "  -r trunk trunk/proj2 -r tags tags/proj2 -r branches branches/proj2 \\"
-    print "  -o merged.dmp \\"
-    print "  -d trunk -d tags -d branches"
-    print ""
-    print "This commandline merges the svn dump files proj1.dmp and proj2.dmp"
-    print "into one big dump file named merged.dmp."
-    print "The contents of trunk of proj1 will be moved to trunk/proj1 and "
-    print "tags into tags/proj1 and branches into branches/proj1. The same"
-    print "renames are done with trunk tags and branches of proj2."
-    print "The directories trunk tags and branches would not exist in the new"
-    print "dump file if they weren't created with the -d options."
-    print ""
+    print("")
+    print(args[2] + " \\")
+    print("  -i proj1.dmp \\")
+    print("  -r trunk trunk/proj1 -r tags tags/proj1 -r branches branches/proj1 \\")
+    print("  -i proj2.dmp \\")
+    print("  -r trunk trunk/proj2 -r tags tags/proj2 -r branches branches/proj2 \\")
+    print("  -o merged.dmp \\")
+    print("  -d trunk -d tags -d branches")
+    print("")
+    print("This commandline merges the svn dump files proj1.dmp and proj2.dmp")
+    print("into one big dump file named merged.dmp.")
+    print("The contents of trunk of proj1 will be moved to trunk/proj1 and ")
+    print("tags into tags/proj1 and branches into branches/proj1. The same")
+    print("renames are done with trunk tags and branches of proj2.")
+    print("The directories trunk tags and branches would not exist in the new")
+    print("dump file if they weren't created with the -d options.")
+    print("")
     sys.exit( 0 )
 
 

@@ -21,6 +21,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 import sys
 from os import mkdir, system, listdir, remove, rmdir
 from os.path import isdir, isfile, abspath
@@ -34,9 +36,9 @@ from svndump.diff import svndump_diff_cmdline
 from svndump.eolfix import svndump_eol_fix_cmdline
 
 def run( cmd ):
-    print "cmd <%s>" % cmd
+    print("cmd <%s>" % cmd)
     rc = system( cmd )
-    print "rc: %d" % rc
+    print("rc: %d" % rc)
     return rc
 
 def kill_dir( dir ):
@@ -66,10 +68,10 @@ def create_text( type, fileid, revnr ):
 def svn_create_dump_file( filename, fileid, data, reposdir, wcdir ):
     """Creates a svn dump file using the svn commandline."""
 
-    print ""
-    print "=" * 80
-    print "=== Initialize"
-    print ""
+    print("")
+    print("=" * 80)
+    print("=== Initialize")
+    print("")
 
     # cleanup first
     kill_dir( reposdir )
@@ -89,10 +91,10 @@ def svn_create_dump_file( filename, fileid, data, reposdir, wcdir ):
         rev = data[irev]
         irev = irev + 1
         revnr = revnr + 1
-        print ""
-        print "=" * 80
-        print "=== Revision %d" % revnr
-        print ""
+        print("")
+        print("=" * 80)
+        print("=== Revision %d" % revnr)
+        print("")
         if rev.has_key( "author" ):
             author = rev["author"]
         else:
@@ -154,7 +156,7 @@ def svn_create_dump_file( filename, fileid, data, reposdir, wcdir ):
                         add = True
                 if nodedata.has_key( "text" ):
                     # set/modify text
-                    print "write text to '%s'" % path
+                    print("write text to '%s'" % path)
                     text = create_text( nodedata["text"], fileid, revnr )
                     fileobj = open( nodefile, "wb" )
                     fileobj.write( text )
@@ -175,18 +177,19 @@ def svn_create_dump_file( filename, fileid, data, reposdir, wcdir ):
         # update wc
         run( "svn up '%s'" % wcdir )
 
-    print ""
-    print "=" * 80
-    print "=== Dump"
-    print ""
+    print("")
+    print("=" * 80)
+    print("=== Dump")
+    print("")
 
     # dump the repos
     run( "svnadmin dump '%s' > '%s'" % ( reposdir, filename ) )
 
-    print ""
-    print "=== Done"
-    print "=" * 80
-    print ""
+    print("")
+    print("=== Done")
+    print("=" * 80)
+    print("")
+
 
 def py_create_dump_file( filename, fileid, data, tmpdir ):
     """Creates a svn dump file using the python classes."""
@@ -209,7 +212,7 @@ def py_create_dump_file( filename, fileid, data, tmpdir ):
         rev = data[irev]
         irev = irev + 1
         revnr = revnr + 1
-        print "  rev %d" % revnr
+        print("  rev %d" % revnr)
         revprops = {}
         revprops["svn:date"] = rev["date"]
         if rev.has_key( "author" ):
@@ -231,7 +234,7 @@ def py_create_dump_file( filename, fileid, data, tmpdir ):
             action = nodedata["action"]
             kind = nodedata["kind"]
             path = nodedata["path"]
-            print "    %s %s '%s'" % ( action, kind, path )
+            print("    %s %s '%s'" % (action, kind, path))
             node = SvnDumpNode( path, action, kind )
             if nodedata.has_key( "copyfrom" ):
                 copyfrom = nodedata["copyfrom"]
@@ -241,7 +244,7 @@ def py_create_dump_file( filename, fileid, data, tmpdir ):
                 filerevtxt = "file %s rev %d\n" % ( fileid, revnr )
                 text = lines * 3 + filerevtxt + lines * 3
                 if nodedata["text"] == "binary":
-                    print "gzip !?!?!"
+                    print("gzip !?!?!")
                     text = zlib.compress( text )
                 elif nodedata["text"] == "broken-eol":
                     text = text.replace( "B\n", "B\r\n" )
@@ -510,10 +513,10 @@ def add_test_result( params, funcname, descr, result ):
 def show_test_results( params ):
     """show test results"""
 
-    print ""
-    print "=" * 80
-    print ""
-    print "Test Results:"
+    print("")
+    print("=" * 80)
+    print("")
+    print("Test Results:")
     for t in params["testresult"]:
         funcname = t[0]
         descr = t[1]
@@ -525,8 +528,9 @@ def show_test_results( params ):
         name = "%s: %s" % ( funcname, descr )
         if len(name) < 40:
             name += " " * (40 - len(name))
-        print "  %s %s (%d)" % ( name, restxt, result )
-    print ""
+        print("  %s %s (%d)" % (name, restxt, result))
+    print("")
+
 
 def test_dumps( params ):
     """Test 1: Test creating dumps."""
@@ -552,13 +556,13 @@ def test_dumps( params ):
     rc = run( "diff -u '%s' '%s'" % ( svndmp, pydmp2 ) )
     add_test_result( params, "test_dumps", "gnu diff svndmp pydmp2", rc )
     if rc != 0:
-        print "diffs found :("
+        print("diffs found :(")
         return 1
     rc = svndump_diff_cmdline( "svndumptest.py",
                                [ svndmp, pydmp2 ] )
     add_test_result( params, "test_dumps", "diff svndmp pydmp2", rc )
     if rc != 0:
-        print "diffs found :("
+        print("diffs found :(")
         return 1
     # compare svndmp and pydmp
     rc = svndump_diff_cmdline( "svndumptest.py",
@@ -566,7 +570,7 @@ def test_dumps( params ):
 							     "--ignore-revprop=svn:date", svndmp, pydmp ] )
     add_test_result( params, "test_dumps", "diff svndmp pydmp", rc )
     if rc != 0:
-        print "diffs found :("
+        print("diffs found :(")
         return 1
 
     # done.
@@ -597,7 +601,7 @@ def test_eolfix( params ):
                                  broken, fixed ] )
     add_test_result( params, "test_eolfix", "diff broken fixed", rc )
     if rc != 0:
-        print "diffs found :("
+        print("diffs found :(")
         return 1
     # eolfix and add eol-style
     svndump_eol_fix_cmdline( "svndumptest.py",
@@ -610,7 +614,7 @@ def test_eolfix( params ):
 								 broken, fixed2 ] )
     add_test_result( params, "test_eolfix", "diff broken fixed2", rc )
     if rc != 0:
-        print "diffs found :("
+        print("diffs found :(")
         return 1
 
     # done.

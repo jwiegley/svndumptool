@@ -21,6 +21,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 from optparse import OptionParser
 import os
 import re
@@ -63,10 +65,11 @@ class LargeFileLister:
             max_rev=max(max_rev,tup[1])
         size_len=max(4,len(str(max_size)))
         rev_len=max(8,len(str(max_rev)))
-        print " %-*s %-*s Path" % (size_len, "Size", rev_len, "Revision")
+        print(" %-*s %-*s Path" % (size_len, "Size", rev_len, "Revision"))
         for tup in self.__large_files:
-            print " %*d %*d %s" % (size_len, tup[0], rev_len, tup[1], tup[2].get_path())
-        
+            print(" %*d %*d %s" % (size_len, tup[0], rev_len, tup[1], tup[2].get_path()))
+
+
 def list_files( srcfile, lister ):
     """
     List the largest files from the dump file.
@@ -89,7 +92,7 @@ def list_files( srcfile, lister ):
                     lister.process_node(srcdmp,node)
             hasrev = srcdmp.read_next_rev()
     else:
-        print "no revisions in the source dump '%s' ???" % srcfile
+        print("no revisions in the source dump '%s' ???" % srcfile)
     lister.done(srcdmp)
 
     # cleanup
@@ -120,7 +123,7 @@ def svndump_list_large_files( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 1:
-        print "Specify a dump file from which to list the large files"
+        print("Specify a dump file from which to list the large files")
         return 1
 
     list_files( args[0], LargeFileLister(options.max_files) )

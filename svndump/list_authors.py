@@ -21,6 +21,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 from optparse import OptionParser
 import os
 import re
@@ -53,14 +55,14 @@ def list_authors( srcfile, git_fmt ):
                     authors.append(author)
             hasrev = srcdmp.read_next_rev()
     else:
-        print "no revisions in the source dump '%s' ???" % srcfile
+        print("no revisions in the source dump '%s' ???" % srcfile)
 
     authors.sort()
     fmt="%s"
     if git_fmt:
         fmt = "%s = RealName <email>"
     for author in authors:
-        print fmt % author
+        print(fmt % author)
     # cleanup
     srcdmp.close()
 
@@ -87,7 +89,7 @@ def svndump_list_authors( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 1:
-        print "Specify a dump file from which to list the authors"
+        print("Specify a dump file from which to list the authors")
         return 1
 
     list_authors( args[0], options.git_fmt )

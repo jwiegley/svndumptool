@@ -20,6 +20,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 import sys
 from optparse import OptionParser
 
@@ -68,10 +70,10 @@ class SvnDumpCvs2SvnFix:
                 msglist = self.__fix_node( indump.get_rev_nr(), node )
                 if msglist != None:
                     rc = 1
-                    print "Error in r%d node %s:" % \
-                            ( indump.get_rev_nr(), node.get_path() )
+                    print("Error in r%d node %s:" %
+                           (indump.get_rev_nr(), node.get_path()))
                     for msg in msglist:
-                        print "  " + msg
+                        print("  " + msg)
                     break
                 outdump.add_node( node )
             has_rev = indump.read_next_rev()
@@ -117,8 +119,8 @@ class SvnDumpCvs2SvnFix:
                 if kind == None:
                     return [ "Unable to fix node." ]
                 node.set_kind( kind )
-                print "Set kind '%s' in r%d for %s" % \
-                        ( kind, revnr, node.get_path() )
+                print("Set kind '%s' in r%d for %s" %
+                       (kind, revnr, node.get_path()))
             self.__add_node( revnr, node )
         elif action == "delete":
             # path must exist
@@ -140,8 +142,8 @@ class SvnDumpCvs2SvnFix:
                 if kind == None:
                     return [ "Unable to fix node." ]
                 node.set_kind( kind )
-                print "Set kind '%s' in r%d for %s" % \
-                        ( kind, revnr, node.get_path() )
+                print("Set kind '%s' in r%d for %s" %
+                       (kind, revnr, node.get_path()))
         return None
 
     def __node_kind( self, revnr, path ):
@@ -265,7 +267,7 @@ def svndump_cvs2svnfix_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len(args) != 2:
-        print "Please specify exactly one input and one output file name."
+        print("Please specify exactly one input and one output file name.")
         return 1
 
     return c2sfix.execute( args[0], args[1] )

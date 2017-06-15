@@ -21,6 +21,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 from optparse import OptionParser
 import os
 
@@ -85,11 +87,11 @@ def copy_adding_git_ignore( srcfile, dstfile ):
                         dstdmp.add_node(newnode)
                         del gitignores[path]
                     else:
-                        print "Unhandled action: '%s'" % action
+                        print("Unhandled action: '%s'" % action)
             revmap[srcdmp.get_rev_nr()] = dstdmp.get_rev_nr()
             hasrev = srcdmp.read_next_rev()
     else:
-        print "no revisions in the source dump '%s' ???" % srcfile
+        print("no revisions in the source dump '%s' ???" % srcfile)
 
     # cleanup
     srcdmp.close()
@@ -117,7 +119,7 @@ def svndump_add_git_ignore( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 2:
-        print "specify a source dump file and a destination dump file"
+        print("specify a source dump file and a destination dump file")
         return 1
 
     copy_adding_git_ignore( args[0], args[1] )

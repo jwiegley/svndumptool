@@ -21,6 +21,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 import sys
 
 from svndump import __version
@@ -76,41 +78,41 @@ def __help( appname, args ):
     if len(args) == 1 and __commands.has_key( args[0] ):
         __commands[args[0]]( appname + " " + args[0], [ "-h" ] )
     else:
-        print ""
-        print "svndumptool.py command [options]"
-        print ""
-        print "  commands:"
-        print "    add-git-ignore       add .gitignore files for each svn:ignore file found"
-        print "    apply-autoprops      apply auto-props to added files"
-        print "    check                check a dump file"
-        print "    copy                 copy a dump file"
-        print "    cvs2svnfix           fix a cvs2svn created dump file"
-        print "    delete-empty-revs    delete empty revisions from a dump file"
-        print "    diff                 show differences between two dump files"
-        print "    edit                 edit files in a dump file"
-        print "    eolfix               fix EOL of text files in a dump"
-        print "    eolfix-revprop       fix EOL of revision property"
-        print "    eolfix-prop          fix EOL of node property"
-        print "    export               export files from a dump file"
-        print "    join                 join dump files"
-        print "    list-large-files     list large files in a dump file"
-        print "    list-authors         list all the authors in a dump file"
-        print "    log                  show the log of a dump file"
-        print "    ls                   list files of a given revision"
-        print "    merge                merge dump files"
-        print "    remove-prop          remove a node property"
-        print "    sanitize             sanitize dump files"
-        print "    split                split dump files"
-        print "    transform-revprop    transform a revision property"
-        print "    transform-prop       transform a node property"
-        print "    --version            print the version"
-        print ""
-        print "  use 'svndumptool.py command -h' for help about the commands."
-        print ""
+        print("")
+        print("svndumptool.py command [options]")
+        print("")
+        print("  commands:")
+        print("    add-git-ignore       add .gitignore files for each svn:ignore file found")
+        print("    apply-autoprops      apply auto-props to added files")
+        print("    check                check a dump file")
+        print("    copy                 copy a dump file")
+        print("    cvs2svnfix           fix a cvs2svn created dump file")
+        print("    delete-empty-revs    delete empty revisions from a dump file")
+        print("    diff                 show differences between two dump files")
+        print("    edit                 edit files in a dump file")
+        print("    eolfix               fix EOL of text files in a dump")
+        print("    eolfix-revprop       fix EOL of revision property")
+        print("    eolfix-prop          fix EOL of node property")
+        print("    export               export files from a dump file")
+        print("    join                 join dump files")
+        print("    list-large-files     list large files in a dump file")
+        print("    list-authors         list all the authors in a dump file")
+        print("    log                  show the log of a dump file")
+        print("    ls                   list files of a given revision")
+        print("    merge                merge dump files")
+        print("    remove-prop          remove a node property")
+        print("    sanitize             sanitize dump files")
+        print("    split                split dump files")
+        print("    transform-revprop    transform a revision property")
+        print("    transform-prop       transform a node property")
+        print("    --version            print the version")
+        print("")
+        print("  use 'svndumptool.py command -h' for help about the commands.")
+        print("")
     return rc
 
 def __print_version( appname, args ):
-    print appname + " " + __version
+    print(appname + " " + __version)
     return 0
 
 if __name__ == '__main__':

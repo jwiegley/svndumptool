@@ -20,13 +20,15 @@
 #
 #===============================================================================
 
+from __future__ import print_function
 #import 
-__all__ = [ "common", "cvs2svnfix", "diff", "eolfix", "file", "merge",
-            "node", "props", "sanitize", "tools" ]
 
 import re
 import common
 from file import SvnDumpFile
+
+__all__ = [ "common", "cvs2svnfix", "diff", "eolfix", "file", "merge",
+            "node", "props", "sanitize", "tools" ]
 
 __doc__ = """A package for processing subversion dump files."""
 __version = "0.8.0"
@@ -80,7 +82,7 @@ def copy_dump_file( srcfile, dstfile, transformer=None ):
             oldRevToNewRev[srcdmp.get_rev_nr()] = dstdmp.get_rev_nr()
             hasrev = srcdmp.read_next_rev()
     else:
-        print "no revisions in the source dump '%s' ???" % srcfile
+        print("no revisions in the source dump '%s' ???" % srcfile)
 
     # cleanup
     srcdmp.close()

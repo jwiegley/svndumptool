@@ -20,6 +20,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 from optparse import OptionParser
 import re
 
@@ -206,11 +208,11 @@ class SvnDumpEolFix:
         """
         parts = fixrevfile.split( ":", 2 )
         if len( parts ) != 3:
-            print "wrong number of fiels for fixrevfile option."
+            print("wrong number of fiels for fixrevfile option.")
             return
         key = ( int( parts[1] ), parts[2] )
         self.__fix_rev_path[key] = self.__parse_fix_option( parts[0] )
-        print key, self.__fix_rev_path[key]
+        print(key, self.__fix_rev_path[key])
 
     def __parse_fix_option( self, fixstr ):
         """
@@ -294,7 +296,7 @@ class SvnDumpEolFix:
                                               srcdmp.get_rev_nr() )
             # now copy all the revisions
             while hasrev:
-                print "\n\n*** r%d ***\n" % srcdmp.get_rev_nr()
+                print("\n\n*** r%d ***\n" % srcdmp.get_rev_nr())
                 self.__process_rev( srcdmp, dstdmp )
                 hasrev = srcdmp.read_next_rev()
         if self.__warning_file != None:
@@ -326,17 +328,17 @@ class SvnDumpEolFix:
         nodeCount = srcdmp.get_node_count()
         while index < nodeCount:
             node = srcdmp.get_node( index )
-            print "  '%s'" % node.get_path()
+            print("  '%s'" % node.get_path())
             istextfile = False
             if node.get_kind() == 'dir':
-                print "    directory, ignored"
+                print("    directory, ignored")
             else:
                 istextfile = self.__is_text_file( srcdmp, node,
                                                   self.__is_text_file_params )
                 if istextfile:
                     node = self.__convert_eol( node, srcdmp.get_rev_nr() )
                 else:
-                    print "    unselected file, ignored"
+                    print("    unselected file, ignored")
             # +++ is node.has_properties a good enough test?
             # maybe i have to save the properties of each node and
             # use them here?
@@ -361,7 +363,7 @@ class SvnDumpEolFix:
 
         if not node.has_text():
             # no text
-            print "    selected file, no text changes"
+            print("    selected file, no text changes")
             return node
 
         # search for CR
@@ -380,12 +382,12 @@ class SvnDumpEolFix:
             key = ( revnr, node.get_path() )
             if self.__fix_rev_path.has_key( key ):
                 fix = self.__fix_rev_path[key]
-            print "    selected file, convert (fix option %d)" % fix
+            print("    selected file, convert (fix option %d)" % fix)
             if self.__dry_run or fix == 0:
                 # do not convert with --dry-run or when there's nothing to fix
                 need_conv = False
         else:
-            print "    selected file, no conversion required"
+            print("    selected file, no conversion required")
         if need_conv:
             # do the conversion
             node.text_reopen( handle )
@@ -413,8 +415,8 @@ class SvnDumpEolFix:
                     data = data.replace( "\r", "" )
                 if not warning_printed and data.find( "\r" ) >= 0:
                     warning_printed = True
-                    print "    WARNING: file still contains CR"
-                    print "      file: '%s'" % node.get_path()
+                    print("    WARNING: file still contains CR")
+                    print("      file: '%s'" % node.get_path())
                     if self.__warning_file != None:
                         self.__warning_file.write(
                                 "# WARNING: file still contains CR\n" )
@@ -525,7 +527,7 @@ def svndump_eol_fix_cmdline( appname, args ):
     eolfix = SvnDumpEolFix()
 
     if len( args ) < 1 or len( args ) > 2:
-        print "please specify one source and optionally one destination file."
+        print("please specify one source and optionally one destination file.")
         return 1
     eolfix.set_input_file( args[0] )
     if len( args ) == 2:

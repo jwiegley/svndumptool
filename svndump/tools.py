@@ -20,6 +20,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 import sys
 from optparse import OptionParser
 
@@ -53,7 +55,7 @@ def svndump_copy_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if len( args ) != 2:
-        print "specify exactly one source and one destination dump file."
+        print("specify exactly one source and one destination dump file.")
         return 1
 
     copy_dump_file( args[0], args[1] )
@@ -121,7 +123,7 @@ class SvnDumpExport:
             revnr = dump.get_rev_nr()
             if self.__exports.has_key( revnr ):
                 for path, filename in self.__exports[revnr].iteritems():
-                    print "r%-6d %s" % ( revnr, path )
+                    print("r%-6d %s" % (revnr, path))
                     nodes = dump.get_nodes_by_path( path, "ACR" )
                     saved = False
                     for node in nodes:
@@ -130,12 +132,12 @@ class SvnDumpExport:
                             node.write_text_to_file( outfile )
                             outfile.close()
                             saved = True
-                            print "  saved as %s" % filename
+                            print("  saved as %s" % filename)
                     if not saved:
                         if len(nodes) == 0:
-                            print "  not found"
+                            print("  not found")
                         else:
-                            print "  has no text"
+                            print("  has no text")
         dump.close()
         return 0
 
@@ -178,9 +180,9 @@ def svndump_export_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if not export.has_exports():
-        print >>sys.stderr, "Warning: there are no files specified to export."
-        print >>sys.stderr, "         Use -e/--export to specify files"
-        print >>sys.stderr
+        print("Warning: there are no files specified to export.", file=sys.stderr)
+        print("         Use -e/--export to specify files", file=sys.stderr)
+        print("", file=sys.stderr)
         parser.print_help(file=sys.stderr)
         return 1
     return export.execute( args[0], options.dir )
@@ -253,7 +255,7 @@ class SvnDumpCheck:
         @param dumpfilename: Name of the file to check.
         """
 
-        print "\nChecking file " + dumpfilename
+        print("\nChecking file " + dumpfilename)
         dump = SvnDumpFileWithHistory()
         if self.__check_actions:
             dump.set_check_actions(True)
@@ -279,7 +281,7 @@ class SvnDumpCheck:
                 if self.__print_node_errors( dump, node ):
                     rc = 1
         dump.close()
-        print [ "OK", "Not OK" ][ rc ]
+        print([ "OK", "Not OK" ][ rc ])
         return rc
 
     def __next_rev( self ):
@@ -297,7 +299,7 @@ class SvnDumpCheck:
         """
         if not self.__rev_printed:
             self.__rev_printed = True
-            print "  Revision %d" % revnr
+            print("  Revision %d" % revnr)
 
     def __next_node( self ):
         """
@@ -318,7 +320,7 @@ class SvnDumpCheck:
         if not self.__node_printed:
             self.__node_printed = True
             self.__print_rev( revnr )
-            print "    Node: %s" % node.get_path()
+            print("    Node: %s" % node.get_path())
 
     def __print_action( self, node ):
         """
@@ -334,7 +336,7 @@ class SvnDumpCheck:
                 actionmsg += ", copied from r%d %s" % (
                         node.get_copy_from_rev(),
                         node.get_copy_from_path() )
-            print actionmsg
+            print(actionmsg)
 
     def __print_rev_errors( self, dump ):
         """
@@ -355,10 +357,10 @@ class SvnDumpCheck:
                 self.print_rev( revnr )
                 revdate = parse_svn_date_str( err[1][0] )
                 prevdate = parse_svn_date_str( err[1][1] )
-                print "    rev date: %s  %10d.%06d" % (
-                    err[1][0], revdate[0], revdate[1] )
-                print "    previous: %s  %10d.%06d" % (
-                    err[1][1], prevdate[0], prevdate[1] )
+                print("    rev date: %s  %10d.%06d" % (
+                    err[1][0], revdate[0], revdate[1]))
+                print("    previous: %s  %10d.%06d" % (
+                    err[1][1], prevdate[0], prevdate[1]))
         return rc
 
     def __print_node_errors( self, dump, node ):
@@ -379,19 +381,19 @@ class SvnDumpCheck:
                 rc = 1
                 self.__print_node( revnr, node )
                 if err[0] == SvnDumpFile.ERR_NODE_MD5_FAIL:
-                    print "      ERROR - md5 calc: %s" % err[1][0]
-                    print "        diff than md5 node: %s" % err[1][1]
+                    print("      ERROR - md5 calc: %s" % err[1][0])
+                    print("        diff than md5 node: %s" % err[1][1])
                 if err[0] == SvnDumpFile.ERR_NODE_EXISTS:
-                    print "      ERROR - Node already exists."
+                    print("      ERROR - Node already exists.")
                 if err[0] == SvnDumpFile.ERR_NODE_NO_PARENT:
-                    print "      ERROR - Parent doesn't exist."
+                    print("      ERROR - Parent doesn't exist.")
                 if err[0] == SvnDumpFile.ERR_NODE_PARENT_NOT_DIR:
-                    print "      ERROR - Parent is not a directory."
+                    print("      ERROR - Parent is not a directory.")
                 if err[0] == SvnDumpFile.ERR_NODE_NO_COPY_SRC:
-                    print "      ERROR - Copy-from path doesn't exist." \
-                            "  r%d %s" % ( err[1][2], err[1][3] )
+                    print("      ERROR - Copy-from path doesn't exist."
+                           "  r%d %s" % (err[1][2], err[1][3]))
                 if err[0] == SvnDumpFile.ERR_NODE_GONE:
-                    print "      ERROR - Node doesn't exist."
+                    print("      ERROR - Node doesn't exist.")
         return rc
 
 def svndump_check_cmdline( appname, args ):
@@ -444,7 +446,7 @@ def svndump_check_cmdline( appname, args ):
         check.set_verbose( True )
 
     if not checks:
-        print "Please specify at least one check option."
+        print("Please specify at least one check option.")
         return 0
 
     rc = 0
@@ -547,7 +549,7 @@ class SvnDumpLs:
             filelist.append( path )
         filelist.sort()
         for path in filelist:
-            print path
+            print(path)
 
         return 0
 
@@ -581,11 +583,11 @@ class SvnDumpLs:
                         path += " (from %s:%d)" % ( fpath, frev )
                     lines += "   %s %s\n" % ( action, path )
                 if revnr == self.revNr:
-                    print lines,
+                    print(lines, end='')
                     lines = ""
                     break
         if len(lines) > 0:
-            print lines,
+            print(lines, end='')
 
         dump.close()
         return 0
@@ -619,10 +621,10 @@ def svndump_ls_cmdline( appname, args ):
     if len(args) == 1:
         return log.execute( args[0] )
     elif len(args) == 0:
-        print "Specify a dump file."
+        print("Specify a dump file.")
         return 1
     else:
-        print "Specify only one dump file."
+        print("Specify only one dump file.")
         return 1
 
 
@@ -673,7 +675,7 @@ class SvnDumpLog:
             try:
                 self.__from_rev = int(parts[0])
             except ValueError:
-                print "Wrong format of revision argument '%s'" % revision
+                print("Wrong format of revision argument '%s'" % revision)
                 return False
             self.__to_rev = self.__from_rev
         elif n == 2:
@@ -682,10 +684,10 @@ class SvnDumpLog:
                 if parts[1] != "HEAD":
                     self.__to_rev = int(parts[1])
             except ValueError:
-                print "Wrong format of revision argument '%s'" % revision
+                print("Wrong format of revision argument '%s'" % revision)
                 return False
         else:
-            print "Wrong format of revision argument '%s'" % revision
+            print("Wrong format of revision argument '%s'" % revision)
             return False
         return True
 
@@ -697,9 +699,9 @@ class SvnDumpLog:
         @param dumpfilename: Name of the file to log.
         """
 
-        print "\n\n" + "=" * 72
+        print("\n\n" + "=" * 72)
         line = "-" * 72
-        print "Dumpfile: " + dumpfilename
+        print("Dumpfile: " + dumpfilename)
         dump = SvnDumpFile()
         dump.open( dumpfilename )
         actions = { "add":"A", "change":"M", "delete":"D", "replace":"R" }
@@ -714,10 +716,10 @@ class SvnDumpLog:
                 lines = "%d line" % linecnt
                 if linecnt > 1:
                     lines += "s"
-                print line
-                print "r%d | %s | %s | %s" % ( revnr, author, date, lines )
+                print(line)
+                print("r%d | %s | %s | %s" % (revnr, author, date, lines))
                 if self.__verbose:
-                    print "Changed paths:"
+                    print("Changed paths:")
                     for node in dump.get_nodes_iter():
                         action = actions[node.get_action()]
                         path = node.get_path()
@@ -729,10 +731,10 @@ class SvnDumpLog:
                             if fpath == "" or fpath[0] != "/":
                                 fpath = "/" + fpath
                             path += " (from %s:%d)" % ( fpath, frev )
-                        print "   %s %s" % ( action, path )
-                print "\n" + log.rstrip() + "\n"
+                        print("   %s %s" % (action, path))
+                print("\n" + log.rstrip() + "\n")
 
-        print line
+        print(line)
         dump.close()
         return 0
 
@@ -794,7 +796,7 @@ def join_dumpfiles( inputlist, outfilename ):
     noutrev = 0
     lastrev = -1
     for filename in inputlist:
-        print "reading %s ..." % filename
+        print("reading %s ..." % filename)
         ninrev = 0
         indump = SvnDumpFile()
         indump.open( filename )
@@ -818,9 +820,9 @@ def join_dumpfiles( inputlist, outfilename ):
                     hasrev = indump.read_next_rev()
                 if hasrev:
                     if (lastrev + 1) != indump.get_rev_nr():
-                        print "renumbering of revisions not supported."
-                        print "last rev was %d, next is %d." % ( lastrev,
-                            indump.get_rev_nr() )
+                        print("renumbering of revisions not supported.")
+                        print("last rev was %d, next is %d." % (lastrev,
+                                                                 indump.get_rev_nr()))
                         indump.close()
                         outdump.close()
                         return 1
@@ -830,10 +832,11 @@ def join_dumpfiles( inputlist, outfilename ):
                 lastrev = indump.get_rev_nr()
                 hasrev = indump.read_next_rev()
         indump.close()
-        print "  copied %d revisions." % ninrev
+        print("  copied %d revisions." % ninrev)
         noutrev += ninrev
     outdump.close()
-    print "wrote %d revisions, last was r%d." % ( noutrev, lastrev )
+    print("wrote %d revisions, last was r%d." % (noutrev, lastrev))
+
 
 def svndump_join_cmdline( appname, args ):
     """
@@ -860,10 +863,10 @@ def svndump_join_cmdline( appname, args ):
     (options, args) = parser.parse_args( args )
 
     if options.outfile == None:
-        print "please specify the output dump file (option -o)."
+        print("please specify the output dump file (option -o).")
         return 1
     if len(args) == 0:
-        print "please specify at least one input dump file."
+        print("please specify at least one input dump file.")
         return 1
 
     return join_dumpfiles( args, options.outfile )
@@ -936,7 +939,7 @@ def split_dumpfiles( inputfilename, outlist ):
             outdump.close()
         indump.close()
     else:
-        print "overlapping revision ranges not supported (yet)."
+        print("overlapping revision ranges not supported (yet).")
         return 1
     return 0
 
@@ -963,7 +966,7 @@ def svndump_split_cmdline( appname, args ):
     if len(args) == 0:
         return 0
     if (len(args) % 3) != 1:
-        print "illegal number of args."
+        print("illegal number of args.")
         return 0
 
     infile = args[0]

@@ -20,6 +20,8 @@
 #
 #===============================================================================
 
+from __future__ import print_function
+
 from common import *
 from node import SvnDumpNode
 
