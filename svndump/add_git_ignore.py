@@ -77,7 +77,7 @@ def copy_adding_git_ignore(srcfile, dstfile):
                             # haven't seen this one yet
                             newnode = SvnDumpNode(path, "add", "file")
                             gitignores[path] = True
-                        f = open("gitignore", "wb");
+                        f = open("gitignore", "wb")
                         f.write(node.get_property("svn:ignore"))
                         f.close()
                         newnode.set_text_file("gitignore")

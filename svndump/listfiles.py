@@ -51,7 +51,7 @@ class LargeFileLister:
         if node.get_kind() == "file":
             size = node.get_text_length()
             if size > self.__smallest_file:
-                self.__large_files.append((size, dump.get_rev_nr(), node));
+                self.__large_files.append((size, dump.get_rev_nr(), node))
                 self.__large_files.sort(key=lambda tup: tup[0])
                 if len(self.__large_files) > self.__max_files:
                     self.__large_files.pop(0)
@@ -59,7 +59,7 @@ class LargeFileLister:
                     self.__smallest_file = self.__large_files[0][0]
 
     def done(self, dump):
-        self.__large_files.reverse();
+        self.__large_files.reverse()
         max_size = self.__large_files[0][0]
         max_rev = 0
         for tup in self.__large_files:
