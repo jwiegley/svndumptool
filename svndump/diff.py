@@ -777,11 +777,11 @@ class SvnDumpDiff:
         @param callback: Callback object for diffs found.
         """
 
-        if props1 == None and props2 == None:
+        if props1 is None and props2 is None:
             return
-        if props1 == None:
+        if props1 is None:
             props1 = {}
-        if props2 == None:
+        if props2 is None:
             props2 = {}
         common = []
         for name in props1:
@@ -867,15 +867,15 @@ def svndump_diff_cmdline(appname, args):
     if options.eol != 0:
         diff.set_check_eol()
     # set the ignores
-    if options.ignores != None:
+    if options.ignores is not None:
         for i in options.ignores:
             callback.add_ignore(i)
     # set revprop ignores
-    if options.ignorerevprop != None:
+    if options.ignorerevprop is not None:
         for i in options.ignorerevprop:
             callback.add_revprop_ignore(i)
     # set property ignores
-    if options.ignoreproperty != None:
+    if options.ignoreproperty is not None:
         for i in options.ignoreproperty:
             callback.add_property_ignore(i)
 

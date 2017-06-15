@@ -65,7 +65,7 @@ def copy_adding_git_ignore(srcfile, dstfile):
                     node.set_copy_from(node.get_copy_from_path(), revmap[node.get_copy_from_rev()])
                 # add the original node
                 dstdmp.add_node(node)
-                if node.get_property("svn:ignore") != None:
+                if node.get_property("svn:ignore") is not None:
                     # find out what the change is and act on it appropriately
                     path = node.get_path() + "/.gitignore"
                     action = node.get_action()

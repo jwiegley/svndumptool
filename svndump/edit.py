@@ -172,7 +172,7 @@ class SvnDumpEdit:
         self.__print(level, "\n\n*** r%d ***\n" % srcdmp.get_rev_nr())
 
         # add revision and revprops
-        if dstdmp != None:
+        if dstdmp is not None:
             dstdmp.add_rev(srcdmp.get_rev_props())
 
         # process nodes
@@ -189,11 +189,11 @@ class SvnDumpEdit:
                     if k == 'replace':
                         node = self.__replace_file(node, v)
                     elif k == 'propdel':
-                        if node.get_property(v) != None:
+                        if node.get_property(v) is not None:
                             self.__print(1, "    delete property '%s'" % v)
                             node.del_property(v)
 
-            if dstdmp != None:
+            if dstdmp is not None:
                 dstdmp.add_node(node)
             index = index + 1
 

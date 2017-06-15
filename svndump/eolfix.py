@@ -53,7 +53,7 @@ def eolfix_callback_prop(dumpfile, node, textfiles):
 
     # check properties
     properties = node.get_properties()
-    if properties == None:
+    if properties is None:
         return False
     if not properties.has_key("svn:eol-style"):
         return False
@@ -75,7 +75,7 @@ def eolfix_callback_regexp(dumpfile, node, expressions):
             name = node.get_path()
         else:
             name = node.get_name()
-        if re.search(name) != None:
+        if re.search(name) is not None:
             return True
     return False
 
@@ -243,7 +243,7 @@ class SvnDumpEolFix:
         @type warnfile: string
         @param warnfile: Name of the warnings file.
         """
-        if self.__warning_file != None:
+        if self.__warning_file is not None:
             self.__warning_file.close()
         self.__warning_count = 0
         self.__warning_file = open(warnfile, "w")
@@ -302,7 +302,7 @@ class SvnDumpEolFix:
                 print("\n\n*** r%d ***\n" % srcdmp.get_rev_nr())
                 self.__process_rev(srcdmp, dstdmp)
                 hasrev = srcdmp.read_next_rev()
-        if self.__warning_file != None:
+        if self.__warning_file is not None:
             self.__warning_file.write(
                 "\n\n# %d warnings\n" % self.__warning_count)
             self.__warning_file.close()
@@ -323,7 +323,7 @@ class SvnDumpEolFix:
         self.__temp_file_nr = 0
 
         # add revision and revprops
-        if dstdmp != None:
+        if dstdmp is not None:
             dstdmp.add_rev(srcdmp.get_rev_props())
 
         # process nodes
@@ -345,10 +345,10 @@ class SvnDumpEolFix:
             # +++ is node.has_properties a good enough test?
             # maybe i have to save the properties of each node and
             # use them here?
-            if self.__eol_style != None and node.has_properties():
+            if self.__eol_style is not None and node.has_properties():
                 if istextfile:
                     node.set_property("svn:eol-style", self.__eol_style)
-            if dstdmp != None:
+            if dstdmp is not None:
                 dstdmp.add_node(node)
             index = index + 1
 
@@ -420,7 +420,7 @@ class SvnDumpEolFix:
                     warning_printed = True
                     print("    WARNING: file still contains CR")
                     print("      file: '%s'" % node.get_path())
-                    if self.__warning_file != None:
+                    if self.__warning_file is not None:
                         self.__warning_file.write(
                             "# WARNING: file still contains CR\n")
                         file = node.get_path()
@@ -535,19 +535,19 @@ def svndump_eol_fix_cmdline(appname, args):
     eolfix.set_input_file(args[0])
     if len(args) == 2:
         eolfix.set_output_file(args[1])
-    if options.regexp != None and len(options.regexp) > 0:
+    if options.regexp is not None and len(options.regexp) > 0:
         eolfix.set_mode_regexp(options.regexp)
     else:
         eolfix.set_mode_prop()
-    if options.eolstyle != None:
+    if options.eolstyle is not None:
         eolfix.set_eol_style(options.eolstyle)
     eolfix.set_fix_options(options.fix)
-    if options.fixrevpath != None:
+    if options.fixrevpath is not None:
         for f in options.fixrevpath:
             eolfix.set_fix_for_rev_file(f)
-    if options.tmpdir != None:
+    if options.tmpdir is not None:
         eolfix.set_temp_dir(options.tmpdir)
-    if options.warnfile != None:
+    if options.warnfile is not None:
         eolfix.set_warning_file(options.warnfile)
 
     eolfix.execute()

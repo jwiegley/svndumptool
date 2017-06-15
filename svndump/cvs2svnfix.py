@@ -69,7 +69,7 @@ class SvnDumpCvs2SvnFix:
             outdump.add_rev(indump.get_rev_props())
             for node in indump.get_nodes_iter():
                 msglist = self.__fix_node(indump.get_rev_nr(), node)
-                if msglist != None:
+                if msglist is not None:
                     rc = 1
                     print("Error in r%d node %s:" %
                           (indump.get_rev_nr(), node.get_path()))
@@ -96,14 +96,14 @@ class SvnDumpCvs2SvnFix:
         kind = None
         if action == "add":
             # path must not exist
-            if self.__node_kind(revnr, path) != None:
+            if self.__node_kind(revnr, path) is not None:
                 return ["Node already exists."]
             # parent must be a dir
             slash = path.rfind("/")
             if slash > 0:
                 ppath = path[:slash]
                 pkind = self.__node_kind(revnr, ppath)
-                if pkind == None:
+                if pkind is None:
                     return ["Parent doesn't exist."]
                 elif pkind != "dir":
                     return ["Parent is not a directory."]
@@ -111,13 +111,13 @@ class SvnDumpCvs2SvnFix:
             if node.has_copy_from():
                 kind = self.__node_kind(node.get_copy_from_rev(),
                                         node.get_copy_from_path())
-                if kind == None:
+                if kind is None:
                     frompath = "  r%d %s" % (node.get_copy_from_rev(),
                                              node.get_copy_from_path())
                     return ["Copy-from path doesn't exist.", frompath]
             if node.get_kind() == "":
                 # missing node kind, fix it!
-                if kind == None:
+                if kind is None:
                     return ["Unable to fix node."]
                 node.set_kind(kind)
                 print("Set kind '%s' in r%d for %s" %
@@ -126,13 +126,13 @@ class SvnDumpCvs2SvnFix:
         elif action == "delete":
             # path must exist
             kind = self.__node_kind(revnr, path)
-            if kind == None:
+            if kind is None:
                 return ["Node doesn't exist."]
             self.__delete_node(revnr, node)
         else:
             # path must exist
             kind = self.__node_kind(revnr, path)
-            if kind == None:
+            if kind is None:
                 return ["Node doesn't exist."]
             # replace = delete & add; changes can be ignored
             if action == "replace" and node.has_copy_from():
@@ -140,7 +140,7 @@ class SvnDumpCvs2SvnFix:
                 self.__add_node(revnr, node)
             if node.get_kind() == "":
                 # missing node kind, fix it!
-                if kind == None:
+                if kind is None:
                     return ["Unable to fix node."]
                 node.set_kind(kind)
                 print("Set kind '%s' in r%d for %s" %
@@ -162,7 +162,7 @@ class SvnDumpCvs2SvnFix:
             return None
         nodehist = self.__history[path]
         i = self.__rev_index(nodehist, revnr)
-        if i == None:
+        if i is None:
             return None
         return nodehist[0]
 
@@ -212,7 +212,7 @@ class SvnDumpCvs2SvnFix:
             if cfnodepath.startswith(cfpath):
                 cfnodehist = self.__history[cfnodepath]
                 i = self.__rev_index(cfnodehist, cfrev)
-                if i != None:
+                if i is not None:
                     npath = path + cfnodepath[cfpathlen:]
                     # add new path
                     if not self.__history.has_key(npath):

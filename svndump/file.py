@@ -216,9 +216,9 @@ class SvnDumpFile:
         """
 
         propStr = ""
-        if properties != None:
+        if properties is not None:
             for key, val in properties.items():
-                if val != None:
+                if val is not None:
                     # add/change property
                     propStr = propStr + ("K %d" % len(key)) + "\n" + key + "\n"
                     propStr = propStr + ("V %d" % len(val)) + "\n" + val + "\n"
@@ -302,7 +302,7 @@ class SvnDumpFile:
 
         # write header and uuid
         self.__file.writelines(["SVN-fs-dump-format-version: 2\n", "\n"])
-        if self.__uuid != None:
+        if self.__uuid is not None:
             self.__file.writelines(["UUID: " + self.__uuid + "\n", "\n"])
 
         # write header and uuid
@@ -351,7 +351,7 @@ class SvnDumpFile:
 
         # write header and uuid
         self.__file.writelines(["SVN-fs-dump-format-version: 2\n", "\n"])
-        if self.__uuid != None:
+        if self.__uuid is not None:
             self.__file.writelines(["UUID: " + self.__uuid + "\n", "\n"])
 
         # done initializing
@@ -479,7 +479,7 @@ class SvnDumpFile:
             if tags.has_key("Node-kind:"):
                 kind = tags["Node-kind:"]
             node = SvnDumpNode(path, action, kind)
-            if properties != None:
+            if properties is not None:
                 node.set_properties(properties)
             if tags.has_key("Node-copyfrom-path:"):
                 node.set_copy_from(tags["Node-copyfrom-path:"].lstrip('/'),
@@ -1011,7 +1011,7 @@ class SvnDumpFileWithHistory(SvnDumpFile):
             return None
         nodehist = self.__nodehist[path]
         i = self.__nodehist_get_rev_index(nodehist, revnr)
-        if i == None:
+        if i is None:
             return None
         return nodehist[0][0]
 
@@ -1064,7 +1064,7 @@ class SvnDumpFileWithHistory(SvnDumpFile):
             if cfnodepath.startswith(cfpath):
                 cfnodehist = self.__nodehist[cfnodepath]
                 i = self.__nodehist_get_rev_index(cfnodehist, cfrev)
-                if i != None:
+                if i is not None:
                     npath = path + cfnodepath[cfpathlen:]
                     # add new path
                     if not self.__nodehist.has_key(npath):
@@ -1117,7 +1117,7 @@ class SvnDumpFileWithHistory(SvnDumpFile):
         if action == "add":
             if self.__enable_check_node_actions:
                 # path must not exist
-                if kind != None:
+                if kind is not None:
                     self.__add_rev_error(revnr, [self.ERR_NODE_EXISTS,
                                                  [path, action]], )
                     err = True
@@ -1127,7 +1127,7 @@ class SvnDumpFileWithHistory(SvnDumpFile):
                     if slash > 0:
                         ppath = path[:slash]
                         pkind = self.__nodehist_get_kind(revnr, ppath)
-                        if pkind == None:
+                        if pkind is None:
                             self.__add_rev_error(revnr,
                                                  [self.ERR_NODE_NO_PARENT,
                                                   [path, action, ppath]], )
@@ -1141,7 +1141,7 @@ class SvnDumpFileWithHistory(SvnDumpFile):
                     if node.has_copy_from():
                         cfrev = node.get_copy_from_rev()
                         cfpath = node.get_copy_from_path()
-                        if self.__nodehist_get_kind(cfrev, cfpath) == None:
+                        if self.__nodehist_get_kind(cfrev, cfpath) is None:
                             self.__add_rev_error(revnr,
                                                  [self.ERR_NODE_NO_COPY_SRC,
                                                   [path, action, cfrev, cfpath]], )
@@ -1151,7 +1151,7 @@ class SvnDumpFileWithHistory(SvnDumpFile):
         elif action == "delete":
             if self.__enable_check_node_actions:
                 # path must exist
-                if kind == None:
+                if kind is None:
                     self.__add_rev_error(revnr,
                                          [self.ERR_NODE_GONE, [path, action]], )
                     err = True
@@ -1160,7 +1160,7 @@ class SvnDumpFileWithHistory(SvnDumpFile):
         else:
             if self.__enable_check_node_actions:
                 # path must exist
-                if kind == None:
+                if kind is None:
                     self.__add_rev_error(revnr,
                                          [self.ERR_NODE_GONE, [path, action]], )
                     err = True

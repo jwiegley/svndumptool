@@ -235,7 +235,7 @@ class SvnDumpMerge:
         for index in range(len(self.__in_dumps)):
             revDat = self.__in_dumps[index].get_rev_date()
             self.__in_rev_dates.append(revDat)
-            if oldest == None or revDat < oldest:
+            if oldest is None or revDat < oldest:
                 oldest = revDat
                 oldestStr = self.__in_dumps[index].get_rev_date_str()
 
@@ -290,7 +290,7 @@ class SvnDumpMerge:
         while index < nodeCount:
             node = srcDump.get_node(index)
             newNode = self.__change_node(dumpIndex, node)
-            if newNode != None:
+            if newNode is not None:
                 self.outDump.add_node(newNode)
             index = index + 1
 
@@ -339,7 +339,7 @@ class SvnDumpMerge:
                 mergeInfo = properties['svn:mergeinfo']
                 for line in mergeInfo.split('\n'):
                     m = re.match('^(.*):(.*)', line)
-                    if m != None:
+                    if m is not None:
                         mergePath = m.group(1)
                         revPart = m.group(2)
                         newMergePath = self.__rename_path(mergePath, dumpIndex)
@@ -354,7 +354,7 @@ class SvnDumpMerge:
                             newMergeFrom = self.__in_rev_nr_maps[dumpIndex][mergeFrom]
                             newMergeInfo = newMergeInfo + revSep + str(newMergeFrom)
                             revSep = ","
-                            if rm.group(2) != None:
+                            if rm.group(2) is not None:
                                 mergeTo = int(rm.group(2))
                                 newMergeTo = self.__in_rev_nr_maps[dumpIndex][mergeTo]
                                 newMergeInfo = newMergeInfo + "-" + str(newMergeTo)

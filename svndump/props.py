@@ -192,7 +192,7 @@ class PropertyTransformer:
     def transform(self, dump):
         for node in dump.get_nodes_iter():
             value = node.get_property(self.__property_name)
-            if value != None:
+            if value is not None:
                 newvalue = re_sub(self.__pattern, self.__replace_template, value)
                 node.set_property(self.__property_name, newvalue)
 
@@ -299,11 +299,11 @@ class SvnConfigParser:
             sline = line.lstrip()
             if line != sline:
                 # continuation, append to the value
-                if key != None:
+                if key is not None:
                     val += " " + sline
-            elif key != None:
+            elif key is not None:
                 # end of continuation, store the key/value pair
-                if section != None:
+                if section is not None:
                     self._sections[section][key] = val
                 key = None
             if len(sline) == 0 or sline[0] in (';', '#'):
@@ -323,7 +323,7 @@ class SvnConfigParser:
                     key = line[0:ceq].rstrip()
                     val = line[ceq + 1:].lstrip()
         # store the last key/value pair
-        if section != None and key != None:
+        if section is not None and key is not None:
             self._sections[section][key] = val
 
     def get(self, section, key):
@@ -563,7 +563,7 @@ def svndump_apply_autoprops_cmdline(appname, args):
         return 1
 
     configfile = options.configfile
-    if configfile == None:
+    if configfile is None:
         configfile = svnconf.path()
 
     aa = ApplyAutoprops(args[0], args[1], configfile)

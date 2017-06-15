@@ -671,7 +671,7 @@ class SvnDumpLog:
         @param revision: A revision number or a range (X:Y).
         """
 
-        if revision == None:
+        if revision is None:
             return True
         if len(revision) == 0:
             return True
@@ -809,7 +809,7 @@ def join_dumpfiles(inputlist, outfilename):
         indump.open(filename)
         hasrev = indump.read_next_rev()
         if hasrev:
-            if outdump == None:
+            if outdump is None:
                 outdump = SvnDumpFile()
                 if indump.get_rev_nr() == 0:
                     # create new dump with revision 0
@@ -869,7 +869,7 @@ def svndump_join_cmdline(appname, args):
                       help="set the name of the output dump file.")
     (options, args) = parser.parse_args(args)
 
-    if options.outfile == None:
+    if options.outfile is None:
         print("please specify the output dump file (option -o).")
         return 1
     if len(args) == 0:
@@ -915,7 +915,7 @@ def split_dumpfiles(inputfilename, outlist):
         outdump = None
         while indump.read_next_rev():
             revnr = indump.get_rev_nr()
-            if outdump == None:
+            if outdump is None:
                 if revnr >= startrev:
                     outdump = SvnDumpFile()
                     if revnr == 0:
@@ -927,7 +927,7 @@ def split_dumpfiles(inputfilename, outlist):
                         # same revNr as the original dump
                         outdump.create_with_rev_n(outfile, indump.get_uuid(),
                                                   indump.get_rev_nr())
-            if outdump != None:
+            if outdump is not None:
                 # have an output file, copy the revision if revnr > 0
                 if revnr > 0:
                     outdump.add_rev_from_dump(indump)
@@ -943,7 +943,7 @@ def split_dumpfiles(inputfilename, outlist):
                     startrev = outlist[index][0]
                     endrev = outlist[index][1]
                     outfile = outlist[index][2]
-        if outdump != None:
+        if outdump is not None:
             outdump.close()
         indump.close()
     else:

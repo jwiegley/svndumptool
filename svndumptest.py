@@ -171,7 +171,7 @@ def svn_create_dump_file(filename, fileid, data, reposdir, wcdir):
                 # for each property do a propset or propdel
                 props = nodedata["props"]
                 for name, value in props.items():
-                    if value == None:
+                    if value is None:
                         run("svn pd '%s' '%s'" % (name, nodefile))
                     else:
                         run("svn ps '%s' '%s' '%s'" % \
@@ -268,7 +268,7 @@ def py_create_dump_file(filename, fileid, data, tmpdir):
                 nodeprops[path] = props
             elif nodedata.has_key("props"):
                 for name, value in nodedata["props"].items():
-                    if value == None:
+                    if value is None:
                         del nodeprops[path][name]
                     else:
                         nodeprops[path][name] = value

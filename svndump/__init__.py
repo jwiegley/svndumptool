@@ -62,7 +62,7 @@ def copy_dump_file(srcfile, dstfile, transformer=None):
         dstdmp.create_like(dstfile, srcdmp)
         # now copy all the revisions
         while hasrev:
-            if transformer != None:
+            if transformer is not None:
                 transformer.transform(srcdmp)
             for node in srcdmp.get_nodes_iter():
                 if node.has_copy_from():
