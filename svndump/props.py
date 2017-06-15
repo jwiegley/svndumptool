@@ -404,7 +404,7 @@ class ApplyAutoprops:
                 inDump.read_next_rev()
             inDump.close()
             outDump.close()
-        except Exception, ex:
+        except Exception as ex:
             print("Error:", ex)
             return 1
         return 0
