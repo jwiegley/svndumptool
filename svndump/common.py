@@ -43,11 +43,11 @@ def parse_svn_date_str(dateStr):
     """
 
     if len(dateStr) != 27:
-        return (0, 0)
+        return 0, 0
     if dateStr[19] != "." or dateStr[26] != "Z":
-        return (0, 0)
+        return 0, 0
     dat = time.strptime(dateStr[:19], "%Y-%m-%dT%H:%M:%S")
-    return (int(calendar.timegm(dat)), int(dateStr[20:26]))
+    return int(calendar.timegm(dat)), int(dateStr[20:26])
 
 
 def create_svn_date_str(dateTuple):
@@ -200,7 +200,7 @@ class ListDict(dict):
         @return: An item (key/value pair).
         """
         key = self.__index[index]
-        return (key, dict.__getitem__(self, key))
+        return key, dict.__getitem__(self, key)
 
     def items(self):
         """

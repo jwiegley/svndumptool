@@ -69,8 +69,8 @@ def copy_adding_git_ignore(srcfile, dstfile):
                     # find out what the change is and act on it appropriately
                     path = node.get_path() + "/.gitignore"
                     action = node.get_action()
-                    if (action == "change" or action == "add"):
-                        if (path in gitignores):
+                    if action == "change" or action == "add":
+                        if path in gitignores:
                             # already saw this one - it is a change to the .gitignore file
                             newnode = SvnDumpNode(path, "change", "file")
                         else:
@@ -83,7 +83,7 @@ def copy_adding_git_ignore(srcfile, dstfile):
                         newnode.set_text_file("gitignore")
                         dstdmp.add_node(newnode)
                         os.remove("gitignore")
-                    elif (action == "delete"):
+                    elif action == "delete":
                         newnode = SvnDumpNode(path, "delete", "file")
                         dstdmp.add_node(newnode)
                         del gitignores[path]

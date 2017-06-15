@@ -45,7 +45,7 @@ def re_sub(pattern, replacement, string):
         # the match object is replaced with a wrapper that
         # returns "" instead of None for unmatched groups
 
-        class _m():
+        class _m:
             def __init__(self, m):
                 self.m = m
                 self.string = m.string

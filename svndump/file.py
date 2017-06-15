@@ -339,7 +339,7 @@ class SvnDumpFile:
 
         # check firstRevNr
         if firstRevNr < 1:
-            raise SvnDumpException("invalid firstRevNr %d (should be >= 1)" % (firstRevNr))
+            raise SvnDumpException("invalid firstRevNr %d (should be >= 1)" % firstRevNr)
 
         # set parameters
         self.__filename = filename
@@ -1048,7 +1048,7 @@ class SvnDumpFileWithHistory(SvnDumpFile):
             kind = "D"
             if node.get_kind() == "file":
                 kind = "F"
-            self.__nodehist[path] = [(kind)]
+            self.__nodehist[path] = [kind]
         # add revision range
         self.__nodehist[path].append([revnr, -1])
         kind = self.__nodehist[path][0][0]
