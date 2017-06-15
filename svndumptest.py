@@ -624,7 +624,7 @@ if __name__ == '__main__':
         tests = int( sys.argv[1] )
 
     params = test_init()
-    rc = 0;
+    rc = 0
     if rc == 0 and tests & 1 != 0:
         rc = test_dumps( params )
     if rc == 0 and tests & 2 != 0:

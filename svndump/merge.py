@@ -196,7 +196,7 @@ class SvnDumpMerge:
         for inFile in self.__in_files:
             inDump = SvnDumpFile()
             inDump.open( inFile )
-            inDump.read_next_rev();
+            inDump.read_next_rev()
             self.__in_dumps = self.__in_dumps + [ inDump ]
             if inDump.get_rev_date_str() < self.__out_r0_date:
                 self.__out_r0_date = inDump.get_rev_date_str()

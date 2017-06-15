@@ -121,7 +121,7 @@ if __name__ == '__main__':
     pfx = appname[0:7]
     cmd = appname[7:-3]
     sfx = appname[-3:]
-    func = __help;
+    func = __help
     args = []
     argidx = 0
     if pfx == "svndump" and sfx == ".py" and __commands.has_key( cmd ):
