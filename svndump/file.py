@@ -1029,7 +1029,7 @@ class SvnDumpFileWithHistory(SvnDumpFile):
             i -= 1
         if i == 0:
             return None
-        if revnr > nodehist[i][1] and nodehist[i][1] >= 0:
+        if revnr > nodehist[i][1] >= 0:
             return None
         return i
 

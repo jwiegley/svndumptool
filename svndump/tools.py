@@ -714,7 +714,7 @@ class SvnDumpLog:
 
         while dump.read_next_rev():
             revnr = dump.get_rev_nr()
-            if revnr >= self.__from_rev and revnr <= self.__to_rev:
+            if self.__from_rev <= revnr <= self.__to_rev:
                 author = dump.get_rev_author()
                 date = dump.get_rev_date_str()
                 log = dump.get_rev_log()

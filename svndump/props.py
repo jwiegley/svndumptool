@@ -316,7 +316,7 @@ class SvnConfigParser:
             else:
                 ceq = line.find("=")
                 cco = line.find(":")
-                if ceq < 0 or (cco < ceq and cco >= 0):
+                if ceq < 0 or (ceq > cco >= 0):
                     ceq = cco
                 if ceq >= 0:
                     # key/value pair
