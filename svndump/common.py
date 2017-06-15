@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 #
 # Copyright (C) 2003 Martin Furter <mf@rola.ch>
 #
@@ -18,7 +18,7 @@
 # along with SvnDumpTool; see the file COPYING.  If not, write to
 # the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #
-#===============================================================================
+# ===============================================================================
 
 from __future__ import print_function
 
@@ -32,33 +32,36 @@ except ImportError:
 
 __doc__ = """Common functions and classes."""
 
+
 # perhaps some of these date functions can be replaced by
 # functions provided by the svn python bindings +++++
 # <sussman> it's our own string format, in libsvn_subr/time.c
 # <sussman> svn_time_[to|from]_cstring()
-def parse_svn_date_str( dateStr ):
+def parse_svn_date_str(dateStr):
     """
     Parse a svn date string and return a tuple containing time_t and micros.
     """
 
     if len(dateStr) != 27:
-        return (0,0)
+        return (0, 0)
     if dateStr[19] != "." or dateStr[26] != "Z":
-        return (0,0)
-    dat = time.strptime( dateStr[:19], "%Y-%m-%dT%H:%M:%S" )
-    return ( int(calendar.timegm(dat)), int( dateStr[20:26] ) )
+        return (0, 0)
+    dat = time.strptime(dateStr[:19], "%Y-%m-%dT%H:%M:%S")
+    return (int(calendar.timegm(dat)), int(dateStr[20:26]))
 
-def create_svn_date_str( dateTuple ):
+
+def create_svn_date_str(dateTuple):
     """
     Creates a svn date string from a tuple containing time_t and micros.
     """
 
-    dat = time.gmtime( dateTuple[0] )
-    dstr = time.strftime( "%Y-%m-%dT%H:%M:%S", dat )
-    mstr = ".%06dZ" % ( dateTuple[1] )
+    dat = time.gmtime(dateTuple[0])
+    dstr = time.strftime("%Y-%m-%dT%H:%M:%S", dat)
+    mstr = ".%06dZ" % (dateTuple[1])
     return dstr + mstr
 
-def is_valid_md5_string( md5 ):
+
+def is_valid_md5_string(md5):
     """
     Checks a md5 string.
 
@@ -68,76 +71,79 @@ def is_valid_md5_string( md5 ):
     @return: True if the string looks like an md5 sum.
     """
 
-    if len( md5 ) != 32:
+    if len(md5) != 32:
         return False
-    if md5.lower().strip( "0123456789abcdef" ) != "":
+    if md5.lower().strip("0123456789abcdef") != "":
         return False
     return True
 
-class SvnDumpException( Exception ):
+
+class SvnDumpException(Exception):
     """A simple exception class."""
-    
-    def __init__( self, text ):
+
+    def __init__(self, text):
         self.text = text
 
-    def __str__( self ):
+    def __str__(self):
         return self.text
+
 
 class ListDictIter:
     """
     Iterator class used by ListDict.
     """
 
-    def __init__( self, listdict, type ):
+    def __init__(self, listdict, type):
         self.__listdict = listdict
         self.__type = type
         self.__index = 0
 
-    def __iter__( self ):
+    def __iter__(self):
         return self
 
-    def next( self ):
+    def next(self):
         index = self.__index
-        if index >= len( self.__listdict ):
+        if index >= len(self.__listdict):
             raise StopIteration()
-        self.__index = index+1
+        self.__index = index + 1
         if self.__type == 1:
-            return self.__listdict.key( index )
+            return self.__listdict.key(index)
         elif self.__type == 2:
-            return self.__listdict[ index ]
+            return self.__listdict[index]
         else:
-            return self.__listdict.item( index )
+            return self.__listdict.item(index)
 
-class ListDict( dict ):
+
+class ListDict(dict):
     """
     A mix of list and dict.
 
     If the key is an int this class acts like a list else like a dict.
     """
 
-    def __init__( self ):
+    def __init__(self):
         """
         Initialize.
         """
-        dict.__init__( self )
+        dict.__init__(self)
         self.__index = []
 
-    def __delitem__( self, key ):
+    def __delitem__(self, key):
         """
         Removes the key/value pair for the specified key or index.
 
         @type key: object
         @param key: Index or key.
         """
-        if type( key ) is int:
+        if type(key) is int:
             index = key
             key = self.__index[index]
         else:
-            index = self.__index.index( key )
+            index = self.__index.index(key)
         del self.__index[index]
-        dict.__delitem__( self, key )
+        dict.__delitem__(self, key)
 
-    def __getitem__( self, key ):
+    def __getitem__(self, key):
         """
         Returns the value for the specified key or index if it's an int.
 
@@ -146,20 +152,20 @@ class ListDict( dict ):
         @rtype: object
         @return: An object.
         """
-        if type( key ) is int:
+        if type(key) is int:
             key = self.__index[key]
-        return dict.__getitem__( self, key )
+        return dict.__getitem__(self, key)
 
-    def __iter__( self ):
+    def __iter__(self):
         """
         Returns an iterator returning key/value tuples ordered by index.
 
         @rtype: iterator
         @return: An iterator over the items.
         """
-        return ListDictIter( self, 1 )
+        return ListDictIter(self, 1)
 
-    def __setitem__( self, key, value ):
+    def __setitem__(self, key, value):
         """
         Adds a key/value pair or replaces the value if the key already exists.
 
@@ -170,21 +176,21 @@ class ListDict( dict ):
         @type value: object
         @param value: A value.
         """
-        if type( key ) is int:
+        if type(key) is int:
             key = self.__index[key]
-        if not self.has_key( key ):
-            self.__index.append( key )
-        dict.__setitem__( self, key, value )
+        if not self.has_key(key):
+            self.__index.append(key)
+        dict.__setitem__(self, key, value)
 
-    def clear( self ):
+    def clear(self):
         """
         Clears this ListDict.
         """
 
-        dict.clear( self )
+        dict.clear(self)
         self.__index = []
 
-    def item( self, index ):
+    def item(self, index):
         """
         Returns the key/value tuple for the given index.
 
@@ -193,10 +199,10 @@ class ListDict( dict ):
         @rtype: tuple
         @return: An item (key/value pair).
         """
-        key = self.__index[ index ]
-        return ( key, dict.__getitem__( self, key ) )
+        key = self.__index[index]
+        return (key, dict.__getitem__(self, key))
 
-    def items( self ):
+    def items(self):
         """
         Returns a list of key/value tuples ordered by index.
 
@@ -205,37 +211,37 @@ class ListDict( dict ):
         """
         ret = []
         for key in self.__index:
-            ret.append( ( key, dict.__getitem__( self, key ) ) )
+            ret.append((key, dict.__getitem__(self, key)))
         return ret
 
-    def iteritems( self ):
+    def iteritems(self):
         """
         Returns an iterator returning key/value tuples ordered by index.
 
         @rtype: iterator
         @return: An iterator over the items.
         """
-        return ListDictIter( self, 0 )
+        return ListDictIter(self, 0)
 
-    def iterkeys( self ):
+    def iterkeys(self):
         """
         Returns an iterator returning keys ordered by index.
 
         @rtype: iterator
         @return: An iterator over the keys.
         """
-        return ListDictIter( self, 1 )
+        return ListDictIter(self, 1)
 
-    def itervalues( self ):
+    def itervalues(self):
         """
         Returns an iterator returning values ordered by index.
 
         @rtype: iterator
         @return: An iterator over the values.
         """
-        return ListDictIter( self, 2 )
+        return ListDictIter(self, 2)
 
-    def key( self, index ):
+    def key(self, index):
         """
         Returns the key for the given index.
 
@@ -244,9 +250,9 @@ class ListDict( dict ):
         @rtype: object
         @return: A key.
         """
-        return self.__index[ index ]
+        return self.__index[index]
 
-    def keys( self ):
+    def keys(self):
         """
         Returns a list of keys ordered by index.
 
@@ -255,7 +261,7 @@ class ListDict( dict ):
         """
         return self.__index
 
-    def values( self ):
+    def values(self):
         """
         Returns a list of values ordered by index.
 
@@ -264,8 +270,9 @@ class ListDict( dict ):
         """
         ret = []
         for key in self.__index:
-            ret.append( dict.__getitem__( self, key ) )
+            ret.append(dict.__getitem__(self, key))
         return ret
+
 
 def sdt_md5():
     """
@@ -274,4 +281,3 @@ def sdt_md5():
     For compatibility with python <2.5.
     """
     return hashlib.md5()
-

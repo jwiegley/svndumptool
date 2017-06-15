@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#===============================================================================
+# ===============================================================================
 #
 # Copyright (C) 2003 Martin Furter <mf@rola.ch>
 # Copyright (C) 2007 CommProve, Inc. (Eli Carter <eli.carter@commprove.com>)
@@ -20,7 +20,7 @@
 # along with SvnDumpTool; see the file COPYING.  If not, write to
 # the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #
-#===============================================================================
+# ===============================================================================
 
 from __future__ import print_function
 
@@ -40,6 +40,7 @@ from optparse import OptionParser
 from file import SvnDumpFile
 from __init__ import copy_dump_file
 
+
 class SanitizeDumpFile(object):
     def __init__(self, options):
         self.__options = options
@@ -57,12 +58,12 @@ class SanitizeDumpFile(object):
 
     def salthex_to_salt(self, salthex):
         bytehex = []
-        for i in range(0,len(salthex),2):
-            bytehex.append(salthex[i:i+2])
+        for i in range(0, len(salthex), 2):
+            bytehex.append(salthex[i:i + 2])
         bytes = [chr(string.atoi(h, 16)) for h in bytehex]
         return ''.join(bytes)
 
-    def sanitize_rev_props(self, rev_props ):
+    def sanitize_rev_props(self, rev_props):
         for k in rev_props.iterkeys():
             if self.__options.logs and k == 'svn:log':
                 rev_props['svn:log'] = self.hash(rev_props['svn:log'])
@@ -73,18 +74,18 @@ class SanitizeDumpFile(object):
                 except ValueError:
                     i = len(self.sanitized_authors)
                     self.sanitized_authors.append(author)
-                rev_props['svn:author'] = "author%s" % (i, )
+                rev_props['svn:author'] = "author%s" % (i,)
             elif k == 'svn:date':
-                pass # leave this for now.
+                pass  # leave this for now.
             else:
                 print("Couldn't sanitize %s: \"%s\"" % (k, rev_props[k]))
         return rev_props
 
     # Sanitize the data using a salted md5sum
-    def hash(self, data ):
-        return hashlib.md5(self.sanitize_salt+data).hexdigest()
+    def hash(self, data):
+        return hashlib.md5(self.sanitize_salt + data).hexdigest()
 
-    def sanitize_path(self, path ):
+    def sanitize_path(self, path):
         parts = path.split('/')
         sparts = []
         for part in parts:
@@ -96,7 +97,7 @@ class SanitizeDumpFile(object):
         spath = '/'.join(sparts)
         return spath
 
-    def sanitize_node(self, node ):
+    def sanitize_node(self, node):
         if self.__options.file_data_method != "none" and node.has_text():
             # Write the original data to a temp file
             (fd, origname) = tempfile.mkstemp(prefix="svndumptool")
@@ -111,7 +112,7 @@ class SanitizeDumpFile(object):
                 md5sum = sdt_md5()
                 md5sum.update(self.sanitize_salt)
                 while True:
-                    data = origdatafile.read(1024**2)
+                    data = origdatafile.read(1024 ** 2)
                     if not len(data):
                         break
                     md5sum.update(data)
@@ -121,7 +122,8 @@ class SanitizeDumpFile(object):
                 # Write the sanitized data to another temp file.
                 newdatafile.writelines(["%s\n" % self.hash(line) for line in origdatafile.readlines()])
             else:
-                assert False, "self.__options.file_data_method has impossible value \"%s\"" % (self.__options.file_data_method, )
+                assert False, "self.__options.file_data_method has impossible value \"%s\"" % (
+                self.__options.file_data_method,)
             # clean up new tempfile handle
             newdatafile.close()
             # clean up the original tempfile
@@ -140,11 +142,13 @@ class SanitizeDumpFile(object):
         # TODO: Properties?
         return node
 
+
 def generate_salthex():
-    salt = ''.join(["%02x" % (random.randrange(0,256), ) for x in range(8)])
+    salt = ''.join(["%02x" % (random.randrange(0, 256),) for x in range(8)])
     return salt
 
-def svndump_sanitize_cmdline( appname, args ):
+
+def svndump_sanitize_cmdline(appname, args):
     """
     Parses the commandline and executes the sanitization.
 
@@ -161,42 +165,42 @@ def svndump_sanitize_cmdline( appname, args ):
     """
 
     usage = "usage: %s [options] source destination" % appname
-    parser = OptionParser( usage=usage, version="%prog "+__version )
+    parser = OptionParser(usage=usage, version="%prog " + __version)
     parser.add_option("-f", "--no-file-data",
-        help="Do not sanitize file data.  (Equivalent to --file-data=none.)",
-        action="store_const", const="none", dest="file_data_method", default=True)
+                      help="Do not sanitize file data.  (Equivalent to --file-data=none.)",
+                      action="store_const", const="none", dest="file_data_method", default=True)
     parser.add_option("-m", "--file-data",
-        help="Method to sanitize file data: whole, line, none.  Default is whole.",
-        type="choice", choices=["whole", "line", "none"],
-        action="store", dest="file_data_method", default="whole")
+                      help="Method to sanitize file data: whole, line, none.  Default is whole.",
+                      type="choice", choices=["whole", "line", "none"],
+                      action="store", dest="file_data_method", default="whole")
     parser.add_option("-n", "--no-filenames",
-        help="Do not sanitize filenames",
-        action="store_false", dest="filenames", default=True)
+                      help="Do not sanitize filenames",
+                      action="store_false", dest="filenames", default=True)
     parser.add_option("-e", "--exclude-filename",
-        help="Do not sanitize this filename.  May be used multiple times.",
-        action="append", dest="filename_excludes", default=[])
+                      help="Do not sanitize this filename.  May be used multiple times.",
+                      action="append", dest="filename_excludes", default=[])
     parser.add_option("-u", "--no-usernames",
-        help="Do not sanitize usernames",
-        action="store_false", dest="usernames", default=True)
+                      help="Do not sanitize usernames",
+                      action="store_false", dest="usernames", default=True)
     parser.add_option("-l", "--no-logs",
-        help="Do not sanitize log messages",
-        action="store_false", dest="logs", default=True)
+                      help="Do not sanitize log messages",
+                      action="store_false", dest="logs", default=True)
     random_salt = generate_salthex()
     parser.add_option("-s", "--salt",
-        help="Specify the salt to use in hex",
-        dest="salt", default=random_salt)
+                      help="Specify the salt to use in hex",
+                      dest="salt", default=random_salt)
 
-    (options, args) = parser.parse_args( args )
+    (options, args) = parser.parse_args(args)
 
-    if len( args ) != 2:
+    if len(args) != 2:
         print("specify exactly one source and one destination dump file.")
         return 1
 
     sanitizer = SanitizeDumpFile(options)
-    copy_dump_file( args[0], args[1], sanitizer )
+    copy_dump_file(args[0], args[1], sanitizer)
     return 0
-    
-    
+
+
 def sdt_md5():
     """
     Returns a new md5 object.

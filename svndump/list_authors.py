@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 #
 # Copyright (C) 2003 Martin Furter <mf@rola.ch>
 # Copyright (C) 2013 Tom Taxon <tom@ourloudhouse.com>
@@ -19,7 +19,7 @@
 # along with SvnDumpTool; see the file COPYING.  If not, write to
 # the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #
-#===============================================================================
+# ===============================================================================
 
 from __future__ import print_function
 
@@ -31,7 +31,7 @@ import sys
 from svndump import __version, SvnDumpFile
 
 
-def list_authors( srcfile, git_fmt ):
+def list_authors(srcfile, git_fmt):
     """
     List all the authors from the dump file.
 
@@ -44,13 +44,13 @@ def list_authors( srcfile, git_fmt ):
     # SvnDumpFile classes for reading/writing dumps
     srcdmp = SvnDumpFile()
     # open source file
-    authors=[]
-    srcdmp.open( srcfile )
+    authors = []
+    srcdmp.open(srcfile)
     hasrev = srcdmp.read_next_rev()
     if hasrev:
         while hasrev:
-            if srcdmp.has_rev_prop( "svn:author" ):
-                author=srcdmp.get_rev_prop_value("svn:author")
+            if srcdmp.has_rev_prop("svn:author"):
+                author = srcdmp.get_rev_prop_value("svn:author")
                 if author not in authors:
                     authors.append(author)
             hasrev = srcdmp.read_next_rev()
@@ -58,7 +58,7 @@ def list_authors( srcfile, git_fmt ):
         print("no revisions in the source dump '%s' ???" % srcfile)
 
     authors.sort()
-    fmt="%s"
+    fmt = "%s"
     if git_fmt:
         fmt = "%s = RealName <email>"
     for author in authors:
@@ -66,7 +66,8 @@ def list_authors( srcfile, git_fmt ):
     # cleanup
     srcdmp.close()
 
-def svndump_list_authors( appname, args ):
+
+def svndump_list_authors(appname, args):
     """
     Parses the commandline and lists the large files based on the options.
 
@@ -83,14 +84,15 @@ def svndump_list_authors( appname, args ):
     """
 
     usage = "usage: %s dumpfile" % appname
-    parser = OptionParser( usage=usage, version="%prog "+__version )
+    parser = OptionParser(usage=usage, version="%prog " + __version)
 
-    parser.add_option("-t", "--git-author-format", action="store_true", dest="git_fmt", default=False, help="output the authors in a format suitable for creating a git authors transform file (user_name = RealName <email>).")
-    (options, args) = parser.parse_args( args )
+    parser.add_option("-t", "--git-author-format", action="store_true", dest="git_fmt", default=False,
+                      help="output the authors in a format suitable for creating a git authors transform file (user_name = RealName <email>).")
+    (options, args) = parser.parse_args(args)
 
-    if len( args ) != 1:
+    if len(args) != 1:
         print("Specify a dump file from which to list the authors")
         return 1
 
-    list_authors( args[0], options.git_fmt )
+    list_authors(args[0], options.git_fmt)
     return 0

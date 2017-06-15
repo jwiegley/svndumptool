@@ -17,11 +17,11 @@ args = {
     "description": 'Package and cmdline tool for processing Subversion dump files.',
     "license": 'GNU General Public License (GPL)',
     "url": 'http://svn.borg.ch/svndumptool/',
-    "download_url": dl_url_fmt.replace( "$V", svndump.__version ),
+    "download_url": dl_url_fmt.replace("$V", svndump.__version),
     "author": 'Martin Furter',
     "author_email": 'mf@rola.ch',
-    "packages": [ 'svndump' ],
-    "scripts": [ 'svndumptool.py' ],
+    "packages": ['svndump'],
+    "scripts": ['svndumptool.py'],
     "classifiers": [
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
@@ -36,9 +36,9 @@ args = {
 
 try:
     import py2exe
-    args["console"] = [ 'svndumptool.py' ]
+
+    args["console"] = ['svndumptool.py']
 except:
     pass
- 
-setup( **args )
 
+setup(**args)

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 #
 # Copyright (C) 2003 Martin Furter <mf@rola.ch>
 # Copyright (C) 2013 Tom Taxon <tom@ourloudhouse.com>
@@ -20,7 +20,7 @@
 # along with SvnDumpTool; see the file COPYING.  If not, write to
 # the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #
-#===============================================================================
+# ===============================================================================
 
 from __future__ import print_function
 
@@ -99,7 +99,7 @@ def svndump_remove_prop(appname, args):
 
     usage = "usage: %s propname regex source destination\n\n" % appname
     usage += "This removes all properties with a value matching the given regex"
-    parser = OptionParser(usage=usage, version="%prog "+__version)
+    parser = OptionParser(usage=usage, version="%prog " + __version)
     (options, args) = parser.parse_args(args)
 
     if len(args) != 4:
