@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 #
 # Copyright (C) 2003 Martin Furter <mf@rola.ch>
 # Copyright (C) 2013 Tom Taxon <tom@ourloudhouse.com>
@@ -20,7 +20,9 @@
 # along with SvnDumpTool; see the file COPYING.  If not, write to
 # the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #
-#===============================================================================
+# ===============================================================================
+
+from __future__ import print_function
 
 from optparse import OptionParser
 import re
@@ -65,14 +67,14 @@ def copy_remove_prop(propname, regex, srcfile, dstfile):
 
                 propvalue = node.get_property(propname)
                 if propvalue is not None and _regex.match(propvalue):
-                    print "removing property " + propname + " with value " + propvalue.strip()
+                    print("removing property " + propname + " with value " + propvalue.strip())
                     node.del_property(propname)
                 dstdmp.add_node(node)
 
             revmap[srcdmp.get_rev_nr()] = dstdmp.get_rev_nr()
             hasrev = srcdmp.read_next_rev()
     else:
-        print "no revisions in the source dump '%s' ???" % srcfile
+        print("no revisions in the source dump '%s' ???" % srcfile)
 
     # cleanup
     srcdmp.close()
@@ -97,11 +99,11 @@ def svndump_remove_prop(appname, args):
 
     usage = "usage: %s propname regex source destination\n\n" % appname
     usage += "This removes all properties with a value matching the given regex"
-    parser = OptionParser(usage=usage, version="%prog "+__version)
+    parser = OptionParser(usage=usage, version="%prog " + __version)
     (options, args) = parser.parse_args(args)
 
     if len(args) != 4:
-        print "specify a property name, regex, source dump file and a destination dump file"
+        print("specify a property name, regex, source dump file and a destination dump file")
         return 1
 
     copy_remove_prop(args[0], args[1], args[2], args[3])
