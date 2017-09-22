@@ -56,7 +56,9 @@ def re_sub(pattern, replacement, string):
         return re._expand(pattern, _m(m), replacement)
 
     newValue = re.sub(pattern, _r, string)
-    print(" - Previous value => %s \n - New value => %s " % (string, newValue))
+    if string != newValue
+        print " - Previous value => %s \n - New value => %s " % (string, newValue)
+
     return newValue
 
 
