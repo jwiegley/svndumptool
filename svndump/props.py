@@ -57,7 +57,7 @@ def re_sub(pattern, replacement, string):
 
     newValue = re.sub(pattern, _r, string)
     if string != newValue:
-        print " - Previous value => %s \n - New value => %s " % (string, newValue)
+        print(" - Previous value => {0} \n - New value => {1} ".format(string, newValue))
 
     return newValue
 
