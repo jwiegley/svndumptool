@@ -187,7 +187,7 @@ class SvnDumpFile:
             # key
             words = line.split()
             if len(words) != 2 or (words[0] != "K" and words[0] != "D"):
-                raise SvnDumpException("illegal proprty key ???")
+                raise SvnDumpException("illegal property key ???")
             key = self.__read_bin(int(words[1]))
             self.__skip_empty_line()
             # value
@@ -196,7 +196,7 @@ class SvnDumpFile:
                 eof, line = self.__read_line(True)
                 words = line.split()
                 if len(words) != 2 or words[0] != "V":
-                    raise SvnDumpException("illegal proprty value ???")
+                    raise SvnDumpException("illegal property value ???")
                 value = self.__read_bin(int(words[1]))
                 self.__skip_empty_line()
             # set property
