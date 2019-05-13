@@ -78,6 +78,8 @@ class SvnDumpNode:
         self.__text_len = -1
         # md5 hash of the text
         self.__text_md5 = ""
+        # sha1 hash of the text
+        self.__text_sha1 = ""
         # the from path if copied else ""
         self.__copy_from_path = ""
         # the from revision if copied else 0
@@ -213,6 +215,24 @@ class SvnDumpNode:
         """
         return self.__text_md5
 
+    def has_sha1(self):
+        """
+        Returns true when this node has a SHA1 sum.
+
+        @rtype: bool
+        @return: True when this node has a SHA1 sum.
+        """
+        return len(self.__text_sha1) > 0
+
+    def get_text_sha1(self):
+        """
+        Returns the SHA1 hash of the text.
+
+        @rtype: string
+        @return: SHA1 sum of the text.
+        """
+        return self.__text_sha1
+
     def has_copy_from(self):
         """
         Returns True when this node has copy-from-path and copy-from-rev.
@@ -331,7 +351,7 @@ class SvnDumpNode:
                                    % self.__action)
         self.__properties = properties
 
-    def set_text_file(self, filename, length=-1, md5="", delete=False):
+    def set_text_file(self, filename, length=-1, md5="", delete=False, sha1=""):
         """
         Sets the text for this node.
 
@@ -345,6 +365,8 @@ class SvnDumpNode:
         @param md5: MD5 sum of the text if known.
         @type delete: bool
         @param delete: When True delete the file.
+        @type sha1: string, optional
+        @param sha1: SHA1 sum of the text if known.
         """
 
         if self.__action == "delete":
@@ -363,8 +385,11 @@ class SvnDumpNode:
         self.__text_md5 = md5
         if not is_valid_md5_string(md5):
             self.__calculate_md5()
+        self.__text_sha1 = sha1
+        if not is_valid_sha1_string(sha1):
+            self.__calculate_sha1()
 
-    def set_text_fileobj(self, fileobj, offset, length, md5):
+    def set_text_fileobj(self, fileobj, offset, length, md5, sha1):
         """
         Sets the text for this node.
 
@@ -379,6 +404,8 @@ class SvnDumpNode:
         @param length: Length of the text.
         @type md5: string
         @param md5: MD5 sum of the text.
+        @type sha1: string
+        @param sha1: SHA1 sum of the text.
         """
 
         if self.__action == "delete":
@@ -393,6 +420,7 @@ class SvnDumpNode:
         self.__text_md5 = md5
         # if !is_valid_md5_string( md5 ) or length == -1:
         #    self.__calculate_md5()
+        self.__text_sha1 = sha1
 
     def set_text_node(self, node):
         """
@@ -417,6 +445,7 @@ class SvnDumpNode:
         self.__file_offset = node.__file_offset
         self.__text_len = node.__text_len
         self.__text_md5 = node.__text_md5
+        self.__text_sha1 = node.__text_sha1
 
     def write_text_to_file(self, outfile):
         """
@@ -550,6 +579,24 @@ class SvnDumpNode:
             md.update(data)
             data = self.text_read(handle)
         self.__text_md5 = md.hexdigest()
+        if self.__text_len == -1:
+            self.__text_len = n
+        self.text_close(handle)
+
+    def __calculate_sha1(self):
+        """
+        Calculates the sha1 of the text of this node.
+        """
+
+        handle = self.text_open()
+        sha1 = hashlib.sha1()
+        data = self.text_read(handle)
+        n = 0
+        while len(data) > 0:
+            n = n + len(data)
+            sha1.update(data)
+            data = self.text_read(handle)
+        self.__text_sha1 = sha1.hexdigest()
         if self.__text_len == -1:
             self.__text_len = n
         self.text_close(handle)

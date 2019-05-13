@@ -187,7 +187,7 @@ class SvnDumpFile:
             # key
             words = line.split()
             if len(words) != 2 or (words[0] != "K" and words[0] != "D"):
-                raise SvnDumpException("illegal proprty key ???")
+                raise SvnDumpException("illegal property key ???")
             key = self.__read_bin(int(words[1]))
             self.__skip_empty_line()
             # value
@@ -196,7 +196,7 @@ class SvnDumpFile:
                 eof, line = self.__read_line(True)
                 words = line.split()
                 if len(words) != 2 or words[0] != "V":
-                    raise SvnDumpException("illegal proprty value ???")
+                    raise SvnDumpException("illegal property value ???")
                 value = self.__read_bin(int(words[1]))
                 self.__skip_empty_line()
             # set property
@@ -488,10 +488,15 @@ class SvnDumpFile:
                 md5 = tags["Text-content-md5:"]
             else:
                 md5 = ""
+            if tags.has_key("Text-content-sha1:"):
+                sha1 = tags["Text-content-sha1:"]
+            else:
+                sha1 = ""
             if tags.has_key("Text-content-length:"):
                 node.set_text_fileobj(self.__file, offset,
                                       int(tags["Text-content-length:"]),
-                                      md5)
+                                      md5,
+                                      sha1)
             upath = (action[0].upper(), path)
             self.__nodes[upath] = node
             # next one...
@@ -803,13 +808,15 @@ class SvnDumpFile:
                 totlen = proplen + textlen
             else:
                 totlen = proplen
+            if node.has_md5():
+                self.__file.write("Text-content-md5: %s\n" % node.get_text_md5())
+            if node.has_sha1():
+                self.__file.write("Text-content-sha1: %s\n" % node.get_text_sha1())
             # write length's of properties text and total
             if proplen > 0:
                 self.__file.write("Prop-content-length: %d\n" % proplen)
             if node.has_text():
                 self.__file.write("Text-content-length: %d\n" % textlen)
-            if node.has_md5():
-                self.__file.write("Text-content-md5: %s\n" % node.get_text_md5())
             if proplen > 0 or node.has_text():
                 self.__file.write("Content-length: %d\n" % totlen)
                 self.__file.write("\n")

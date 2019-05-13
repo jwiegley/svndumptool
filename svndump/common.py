@@ -78,6 +78,23 @@ def is_valid_md5_string(md5):
     return True
 
 
+def is_valid_sha1_string(sha1):
+    """
+    Checks a sha1 string.
+
+    @type sha1: object
+    @param sha1: SHA1 string.
+    @rtype: bool
+    @return: True if the string looks like an sha1 sum.
+    """
+
+    if len(sha1) != 40:
+        return False
+    if sha1.lower().strip("0123456789abcdef") != "":
+        return False
+    return True
+
+
 class SvnDumpException(Exception):
     """A simple exception class."""
 
